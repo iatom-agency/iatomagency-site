@@ -15,6 +15,7 @@ body {
   border-left: 1px solid var(--iat-bordure);
   border-right: 1px solid var(--iat-bordure);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 a {
@@ -26,26 +27,175 @@ img {
   height: auto;
 }
 
-/* Garde-fou responsive : le design a été conçu pour un plan fixe (1180px).
-   Ces règles évitent le débordement horizontal sur petit écran sans
-   réagencer la mise en page — un vrai passage responsive reste à faire
-   si les visiteurs mobiles sont significatifs. */
+/* ---------------------------------------------------------------------
+   Burger (bouton menu mobile) — masqué par défaut, affiché sous 900px
+   --------------------------------------------------------------------- */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex: none;
+  z-index: 210;
+}
+.nav-burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--iat-anthracite);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-burger--open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger--open span:nth-child(2) { opacity: 0; }
+.nav-burger--open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 46, 51, 0.45);
+  z-index: 190;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* ---------------------------------------------------------------------
+   Grilles structurelles → empilées en une colonne sur tablette/mobile.
+   Ces classes sont posées par build_site.py sur les grid-template-columns
+   fixes du design (sidebar 260/360/120px, cartes 3 colonnes, formulaire).
+   --------------------------------------------------------------------- */
 @media (max-width: 900px) {
-  .page [style*="padding: 96px 80px"],
-  .page [style*="padding: 0px 80px"],
-  .page [style*="padding: 80px 80px"],
-  .page [style*="padding: 72px 80px"],
-  .page [style*="padding: 48px 80px"],
-  .page [style*="padding: 24px 80px"],
-  .page [style*="padding: 20px 80px"],
-  .page [style*="padding: 16px 80px"] {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
-  .page [style*="grid-template-columns: 1fr 1fr 1fr"],
-  .page [style*="grid-template-columns: 260px 1fr"],
-  .page [style*="grid-template-columns: 1fr 360px"],
-  .page [style*="grid-template-columns: 1fr 1fr"] {
+  .grid-photo-bio,
+  .grid-offre-section,
+  .grid-methode-step,
+  .grid-contact-layout,
+  .grid-cards-3,
+  .grid-form-pair {
     grid-template-columns: 1fr !important;
+  }
+  .grid-photo-bio { gap: 32px !important; }
+  .grid-contact-layout { gap: 40px !important; }
+}
+
+/* ---------------------------------------------------------------------
+   Header : bascule vers le menu burger sous 900px
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .nav-burger { display: flex; }
+
+  .site-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(320px, 82vw);
+    background: var(--iat-fond);
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    padding: 96px 32px 32px !important;
+    margin: 0;
+    transform: translateX(100%);
+    transition: transform 0.25s var(--iat-ease, ease);
+    box-shadow: -12px 0 32px rgba(11, 46, 51, 0.18);
+    z-index: 200;
+    font-size: 17px !important;
+    box-sizing: border-box;
+  }
+  .site-nav--open {
+    transform: translateX(0);
+  }
+  .site-nav a {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--iat-bordure);
+  }
+  body.nav-open {
+    overflow: hidden;
+  }
+  body.nav-open .nav-backdrop {
+    display: block;
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Bannière CTA pleine largeur (accueil) : passe en colonne sur mobile
+   --------------------------------------------------------------------- */
+@media (max-width: 700px) {
+  [style*="padding: 72px 80px"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Pied de page : logo + colonnes de liens empilés
+   --------------------------------------------------------------------- */
+@media (max-width: 700px) {
+  .site-footer-top {
+    flex-direction: column !important;
+    gap: 28px !important;
+  }
+  .site-footer-cols {
+    flex-direction: column !important;
+    gap: 24px !important;
+    width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Réduction des marges horizontales (80px de base sur tout le site).
+   Vérifié : "80px" n'apparaît en dur, dans le HTML généré, que sur les
+   paddings horizontaux — la substitution est donc sûre sur tout le site.
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .page [style*="80px"] {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+}
+@media (max-width: 560px) {
+  .page [style*="80px"] {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Typographie : on resserre l'échelle sur mobile pour éviter les titres
+   disproportionnés par rapport à la largeur d'écran.
+   --------------------------------------------------------------------- */
+@media (max-width: 700px) {
+  .iat-heading--display { font-size: 38px; line-height: 44px; }
+  .iat-heading--h1      { font-size: 32px; line-height: 38px; }
+  .iat-heading--h2      { font-size: 27px; line-height: 33px; }
+  .iat-heading--h3      { font-size: 23px; line-height: 29px; }
+  .iat-heading--h4      { font-size: 20px; line-height: 27px; }
+  .iat-text--chapo      { font-size: 17px; line-height: 26px; }
+}
+
+/* Logos (en-tête 34px / pied de page 44px) légèrement réduits sur mobile */
+@media (max-width: 560px) {
+  [style*="font-size: 34px"] { font-size: 26px !important; }
+  [style*="font-size: 44px"] { font-size: 32px !important; }
+}
+
+/* ---------------------------------------------------------------------
+   Pied de page : les colonnes de liens gardent une largeur lisible
+   quand elles sont empilées (évite un texte étiré sur toute la largeur)
+   --------------------------------------------------------------------- */
+@media (max-width: 700px) {
+  .site-footer-cols > div {
+    max-width: 100%;
   }
 }

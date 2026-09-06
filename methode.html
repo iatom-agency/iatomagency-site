@@ -13,14 +13,17 @@
 <div class="page">
 <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 80px; border-bottom: 1px solid var(--iat-bordure);">
     <span class="iat-logo iat-logo--principal iat-logo--horizontal" role="img" aria-label="IATom Agency" style="font-size: 34px;"><span class="iat-logo__mot"><span class="iat-logo__i">I<span class="iat-logo__point"></span></span><span class="iat-logo__ia">A</span><span class="iat-logo__tom">Tom</span></span><span class="iat-logo__filet"></span><span class="iat-logo__descripteur-inline">Agency</span></span>
-    <div style="display: flex; align-items: center; gap: 28px; font-family: var(--iat-font-texte); font-size: 15px;">
+    <button class="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="site-nav" style="display: flex; align-items: center; gap: 28px; font-family: var(--iat-font-texte); font-size: 15px;">
       <a href="index.html" style="color: var(--iat-texte); text-decoration:none;">Accueil</a>
       <a href="offre.html" style="color: var(--iat-texte); text-decoration:none;">Offre</a>
       <a href="methode.html" style="color: var(--iat-petrole); font-weight: 600; border-bottom: 2px solid var(--iat-corail); padding-bottom: 2px; text-decoration:none;" aria-current="page">Méthode</a>
       <a href="a-propos.html" style="color: var(--iat-texte); text-decoration:none;">À propos</a>
       <a href="contact.html" style="color: var(--iat-texte); text-decoration:none;">Contact</a>
     </div>
-  </div>
+  
+  <div class="nav-backdrop"></div>
+</div>
 
   <div style="padding: 80px 80px 64px; display: flex; flex-direction: column; gap: 20px;">
     <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Comment je travaille</h1>
@@ -28,21 +31,21 @@
   </div>
 
   <div style="padding: 0px 80px 72px; display: flex; flex-direction: column;">
-    <div style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); align-items: start;">
+    <div class="grid-methode-step" style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); align-items: start;">
       <div style="font-family: var(--iat-font-mono); font-size: 32px; color: var(--iat-corail); line-height: 1;">01</div>
       <div style="display: flex; flex-direction: column; gap: 10px; max-width: 720px;">
         <h3 class="iat-heading iat-heading--h3" style="margin: 0px;">Observer</h3>
         <p class="iat-text iat-text--corps" style="margin: 0px;">J'observe — un temps d'échange sur votre quotidien réel, pas une liste de logiciels théorique.</p>
       </div>
     </div>
-    <div style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); align-items: start;">
+    <div class="grid-methode-step" style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); align-items: start;">
       <div style="font-family: var(--iat-font-mono); font-size: 32px; color: var(--iat-corail); line-height: 1;">02</div>
       <div style="display: flex; flex-direction: column; gap: 10px; max-width: 720px;">
         <h3 class="iat-heading iat-heading--h3" style="margin: 0px;">Diagnostiquer</h3>
         <p class="iat-text iat-text--corps" style="margin: 0px;">Je diagnostique — j'identifie ce qui peut être allégé, sans toucher à ce qui relève de votre expertise ou de vos arbitrages.</p>
       </div>
     </div>
-    <div style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); border-bottom: 1px solid var(--iat-bordure); align-items: start;">
+    <div class="grid-methode-step" style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); border-bottom: 1px solid var(--iat-bordure); align-items: start;">
       <div style="font-family: var(--iat-font-mono); font-size: 32px; color: var(--iat-corail); line-height: 1;">03</div>
       <div style="display: flex; flex-direction: column; gap: 10px; max-width: 720px;">
         <h3 class="iat-heading iat-heading--h3" style="margin: 0px;">Accompagner</h3>
@@ -58,9 +61,9 @@
   </div>
 
   <div style="background: var(--iat-sable);">
-  <div style="padding: 48px 80px; display: flex; align-items: flex-start; justify-content: space-between; gap: 48px;">
+  <div class="site-footer-top" style="padding: 48px 80px; display: flex; align-items: flex-start; justify-content: space-between; gap: 48px;">
     <span class="iat-logo iat-logo--principal iat-logo--standard" role="img" aria-label="IATom Agency" style="font-size: 44px;"><span class="iat-logo__mot"><span class="iat-logo__i">I<span class="iat-logo__point"></span></span><span class="iat-logo__ia">A</span><span class="iat-logo__tom">Tom</span></span><span class="iat-logo__descripteur"><span>A</span><span>G</span><span>E</span><span>N</span><span>C</span><span>Y</span></span></span>
-    <div style="display: flex; gap: 64px; font-family: var(--iat-font-texte); font-size: 14px; color: var(--iat-texte);">
+    <div class="site-footer-cols" style="display: flex; gap: 64px; font-family: var(--iat-font-texte); font-size: 14px; color: var(--iat-texte);">
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">PAGES</div>
         <a href="index.html" style="color:inherit;text-decoration:none;">Accueil</a><a href="offre.html" style="color:inherit;text-decoration:none;">Offre</a><a href="methode.html" style="color:inherit;text-decoration:none;">Méthode</a><a href="a-propos.html" style="color:inherit;text-decoration:none;">À propos</a><a href="contact.html" style="color:inherit;text-decoration:none;">Contact</a>
@@ -77,5 +80,6 @@
   </div>
   <div style="padding: 16px 80px; border-top: 1px solid var(--iat-bordure); font-family: var(--iat-font-mono); font-size: 12px; color: var(--iat-gris-texte);">© 2026 IATom Agency. Tous droits réservés.</div></div>
 </div>
+<script src="assets/nav.js" defer></script>
 </body>
 </html>
