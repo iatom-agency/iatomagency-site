@@ -213,7 +213,11 @@ img {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 20px 32px;
+  /* Le padding-right réserve l'espace occupé par le badge "Powered by
+     Netlify" (plan gratuit), fixé lui aussi en bas à droite avec un
+     z-index supérieur au nôtre : sans cette marge, le badge recouvre
+     et intercepte les clics sur le bouton "Accepter". */
+  padding: 20px 210px 20px 32px;
   background: var(--iat-petrole);
   color: var(--iat-blanc-chaud);
   box-shadow: 0 -8px 24px rgba(11, 46, 51, 0.25);
@@ -252,7 +256,11 @@ img {
   .cookie-banner {
     flex-direction: column;
     align-items: stretch;
-    padding: 20px;
+    /* Sur mobile, la ligne de boutons passe en bas du bandeau : on la
+       remonte au-dessus du badge "Powered by Netlify" (lui aussi fixé
+       en bas d'écran) via ce padding-bottom, plutôt que de réserver de
+       la largeur comme en desktop. */
+    padding: 20px 20px 68px;
   }
   .cookie-banner__actions {
     justify-content: stretch;
