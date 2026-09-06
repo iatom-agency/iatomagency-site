@@ -1,16 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-16FWMHCT91"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-16FWMHCT91');
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Politique de confidentialité — IATom Agency</title>
@@ -98,9 +88,17 @@
       </div>
     </div>
   </div>
-  <div style="padding: 16px 80px; border-top: 1px solid var(--iat-bordure); font-family: var(--iat-font-mono); font-size: 12px; color: var(--iat-gris-texte);">© 2026 IATom Agency. Tous droits réservés.</div>
+  <div style="padding: 16px 80px; border-top: 1px solid var(--iat-bordure); font-family: var(--iat-font-mono); font-size: 12px; color: var(--iat-gris-texte);">© 2026 IATom Agency. Tous droits réservés.<button type="button" id="cookie-manage" class="cookie-manage-link">Gérer les cookies</button></div>
+  </div>
+</div>
+<div id="cookie-banner" class="cookie-banner" hidden>
+  <p class="cookie-banner__text">Ce site utilise Google Analytics pour mesurer sa fréquentation. Ces cookies ne sont déposés qu'avec votre accord. <a href="politique-confidentialite.html">En savoir plus</a>.</p>
+  <div class="cookie-banner__actions">
+    <button type="button" id="cookie-refuse" class="iat-button iat-button--secondary">Refuser</button>
+    <button type="button" id="cookie-accept" class="iat-button iat-button--primary">Accepter</button>
   </div>
 </div>
 <script src="assets/nav.js" defer></script>
+<script src="assets/consent.js" defer></script>
 </body>
 </html>
