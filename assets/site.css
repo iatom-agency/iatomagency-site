@@ -1,0 +1,51 @@
+/* site.css — mise en page du site réel (habillage autour du design system IATom) */
+
+html {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #DED6C8;
+}
+
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  background: var(--iat-fond);
+  border-left: 1px solid var(--iat-bordure);
+  border-right: 1px solid var(--iat-bordure);
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Garde-fou responsive : le design a été conçu pour un plan fixe (1180px).
+   Ces règles évitent le débordement horizontal sur petit écran sans
+   réagencer la mise en page — un vrai passage responsive reste à faire
+   si les visiteurs mobiles sont significatifs. */
+@media (max-width: 900px) {
+  .page [style*="padding: 96px 80px"],
+  .page [style*="padding: 0px 80px"],
+  .page [style*="padding: 80px 80px"],
+  .page [style*="padding: 72px 80px"],
+  .page [style*="padding: 48px 80px"],
+  .page [style*="padding: 24px 80px"],
+  .page [style*="padding: 20px 80px"],
+  .page [style*="padding: 16px 80px"] {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+  .page [style*="grid-template-columns: 1fr 1fr 1fr"],
+  .page [style*="grid-template-columns: 260px 1fr"],
+  .page [style*="grid-template-columns: 1fr 360px"],
+  .page [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
