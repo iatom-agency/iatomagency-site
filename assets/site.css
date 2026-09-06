@@ -199,3 +199,76 @@ img {
     max-width: 100%;
   }
 }
+
+/* ---------------------------------------------------------------------
+   Bandeau de consentement cookies (Google Analytics)
+   --------------------------------------------------------------------- */
+.cookie-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 32px;
+  background: var(--iat-petrole);
+  color: var(--iat-blanc-chaud);
+  box-shadow: 0 -8px 24px rgba(11, 46, 51, 0.25);
+}
+/* Le sélecteur [hidden] seul a la même spécificité que .cookie-banner et
+   perd la cascade puisque site.css est chargé après le style natif du
+   navigateur : sans cette règle, le bandeau reste "display:flex" (donc
+   visible et cliquable) même avec l'attribut hidden posé par consent.js. */
+.cookie-banner[hidden] {
+  display: none;
+}
+.cookie-banner__text {
+  margin: 0;
+  font-family: var(--iat-font-texte);
+  font-size: 14px;
+  line-height: 22px;
+  max-width: 760px;
+}
+.cookie-banner__text a {
+  color: var(--iat-ambre);
+  text-decoration: underline;
+}
+.cookie-banner__actions {
+  display: flex;
+  gap: 12px;
+  flex: none;
+}
+.cookie-banner__actions .iat-button--secondary {
+  color: var(--iat-blanc-chaud);
+  border-color: var(--iat-blanc-chaud);
+}
+.cookie-banner__actions .iat-button--secondary:hover {
+  background: rgba(247, 242, 234, 0.12);
+}
+@media (max-width: 700px) {
+  .cookie-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+  .cookie-banner__actions {
+    justify-content: stretch;
+  }
+  .cookie-banner__actions .iat-button {
+    flex: 1;
+  }
+}
+
+.cookie-manage-link {
+  margin-left: 12px;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
