@@ -81,6 +81,20 @@
   --iat-etat-alerte: var(--iat-alerte);
   --iat-etat-erreur: var(--iat-erreur);
   --iat-etat-info: var(--iat-info);
+  /* Correctif contraste (finding accessibilité Lighthouse, 2026-09-07) :
+     --iat-corail (#D96A47) est trop clair pour du texte ou pour du texte
+     blanc en fond plein sur les surfaces claires du site (ratios WCAG
+     mesurés : 2.66:1 en texte sur --iat-surface, 3.09:1 en texte blanc sur
+     fond corail — le seuil AA texte normal est 4.5:1). Ces deux variantes
+     assombries, même teinte, comblent l'écart sans toucher --iat-corail
+     lui-même (qui reste utilisé tel quel ailleurs — ex. les numéros
+     01/02/03 de methode.html, en 32px, où le ratio de 3.09:1 respecte déjà
+     le seuil AA "grand texte" de 3:1). Uniquement défini ici (thème clair) :
+     le thème sombre n'est pas activé sur le site actuel.
+  */
+  --iat-corail-bouton: #B4462F;      /* fond des boutons primaires : 4.88:1 avec du texte blanc-chaud */
+  --iat-corail-bouton-survol: #A94323; /* survol du bouton primaire : 5.36:1 */
+  --iat-corail-texte: #A94323;       /* corail utilisé comme texte (eyebrow de carte) : 4.61:1 sur --iat-surface, 5.36:1 sur --iat-surface-neutre */
 }
 [data-theme=dark] {
   --iat-fond: var(--iat-nuit);
@@ -141,11 +155,11 @@
   cursor: not-allowed;
 }
 .iat-button--primary {
-  background: var(--iat-accent);
+  background: var(--iat-corail-bouton);
   color: var(--iat-texte-sur-accent);
 }
 .iat-button--primary:hover:not(:disabled) {
-  background: var(--iat-accent-survol);
+  background: var(--iat-corail-bouton-survol);
 }
 .iat-button--secondary {
   background: transparent;
@@ -190,7 +204,7 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--iat-accent);
+  color: var(--iat-corail-texte);
 }
 .iat-card--petrole .iat-card__eyebrow {
   color: var(--iat-ambre);
