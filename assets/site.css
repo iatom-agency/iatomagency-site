@@ -280,3 +280,21 @@ img {
   padding: 0;
   font: inherit;
 }
+
+/* ---------------------------------------------------------------------
+   Bloc de réservation Google Agenda (page contact) : on habille le
+   conteneur avec les codes visuels du site (ombre, angles arrondis),
+   sans toucher au code de l'iframe fourni par Google, qui est déjà
+   responsive nativement (width: 100%). La largeur générale (80px, puis
+   40px/20px sous 900px/560px) est reprise via la règle générique
+   .page [style*="80px"] déjà en place plus haut dans ce fichier.
+   --------------------------------------------------------------------- */
+.iat-booking-frame {
+  border-radius: var(--iat-radius-m);
+  box-shadow: var(--iat-ombre);
+  overflow: hidden;
+  max-width: 820px;
+}
+.iat-booking-frame iframe {
+  display: block;
+}
