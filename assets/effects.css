@@ -2,6 +2,9 @@
    Thomas le 24/09/2026 : en-tête sticky, apparition au scroll, survol
    cartes/boutons, barre de progression, défilement fluide, feedback
    formulaire contact — mode sombre explicitement exclu du périmètre).
+   Complété le 24/09/2026 (deuxième vague, validée par Thomas) : transition
+   douce entre les pages, FAQ en accordéon (accueil), coche animée sur la
+   page de confirmation (merci.html).
 
    Fichier additif et autonome : n'importe quelle règle ci-dessous peut être
    retirée sans toucher à site.css ni styles.css. Pour tout annuler d'un
@@ -126,6 +129,116 @@ html {
 }
 
 /* ---------------------------------------------------------------------
+   7) Transition douce entre les pages (View Transitions API, navigation
+   multi-documents). Purement progressif : un navigateur qui ne connaît
+   pas @view-transition ignore simplement la règle et garde le
+   comportement actuel (aucun fallback à écrire). Le fondu par défaut du
+   navigateur suffit ; on ne personnalise pas la durée pour rester sur des
+   valeurs éprouvées et cohérentes entre navigateurs.
+   --------------------------------------------------------------------- */
+@view-transition {
+  navigation: auto;
+}
+
+/* ---------------------------------------------------------------------
+   8) FAQ en accordéon (accueil, section "Vos questions avant de vous
+   lancer"). Une seule question ouverte à la fois (logique dans
+   effects.js) ; l'ouverture/fermeture est animée en CSS pur via la
+   technique grid-template-rows 0fr -> 1fr (pas de mesure de hauteur en
+   JS, pas de saut visuel).
+   --------------------------------------------------------------------- */
+.iat-faq__item {
+  border-top: 1px solid var(--iat-bordure);
+}
+.iat-faq__item:last-child {
+  border-bottom: 1px solid var(--iat-bordure);
+}
+.iat-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 0;
+  margin: 0;
+  background: none;
+  border: none;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.iat-faq__question:hover {
+  color: var(--iat-petrole);
+}
+.iat-faq__chevron {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  margin-top: 2px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+.iat-faq__item--open .iat-faq__chevron {
+  transform: rotate(-135deg);
+  margin-top: 6px;
+}
+.iat-faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+.iat-faq__panel > .iat-faq__answer-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.iat-faq__answer {
+  margin: 0;
+  padding-bottom: 20px;
+}
+.iat-faq__item--open .iat-faq__panel {
+  grid-template-rows: 1fr;
+}
+
+/* ---------------------------------------------------------------------
+   9) Coche animée sur la page de confirmation (merci.html) — le tracé du
+   cercle puis de la coche se dessine au chargement (stroke-dashoffset),
+   séquence courte (cercle puis coche) pour marquer visuellement "c'est
+   fait" après l'envoi du formulaire de contact.
+   --------------------------------------------------------------------- */
+.iat-check {
+  display: block;
+  margin-bottom: 4px;
+}
+.iat-check__circle,
+.iat-check__mark {
+  fill: none;
+  stroke: var(--iat-corail);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iat-check__circle {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: iat-check-draw 500ms var(--iat-ease, ease) forwards;
+}
+.iat-check__mark {
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: iat-check-draw 300ms var(--iat-ease, ease) 450ms forwards;
+}
+@keyframes iat-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------
    Accessibilité : si l'utilisateur a demandé "reduce motion" au niveau
    système, on neutralise tous les effets de mouvement ci-dessus (même
    principe que l'animation du logo déjà présente dans styles.css) sans
@@ -160,5 +273,17 @@ html {
   }
   .iat-progress__bar {
     transition: none;
+  }
+  @view-transition {
+    navigation: none;
+  }
+  .iat-faq__chevron,
+  .iat-faq__panel {
+    transition: none;
+  }
+  .iat-check__circle,
+  .iat-check__mark {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }
