@@ -4,7 +4,7 @@
    formulaire contact — mode sombre explicitement exclu du périmètre).
    Complété le 24/09/2026 (deuxième vague, validée par Thomas) : transition
    douce entre les pages, FAQ en accordéon (accueil), coche animée sur la
-   page de confirmation (merci.html).
+   page de confirmation (merci.html), sous-menu scroll-spy (offre.html).
 
    Fichier additif et autonome : n'importe quelle règle ci-dessous peut être
    retirée sans toucher à site.css ni styles.css. Pour tout annuler d'un
@@ -239,6 +239,87 @@ html {
 }
 
 /* ---------------------------------------------------------------------
+   10) Sous-menu "scroll-spy" (offre.html uniquement) — PME / Collectivités
+   / Syndics. Périmètre volontairement réduit à cette seule page (validé
+   par Thomas le 24/09/2026) : methode.html est trop courte pour justifier
+   une navigation de ce type.
+
+   position: sticky ne fonctionne PAS ici, pour la même raison que
+   l'en-tête (règle 1 ci-dessus) : .page a "overflow-x: hidden", ce qui
+   force overflow-y à "auto" par la spec CSS et neutralise le sticky de
+   tout descendant. On reproduit donc le même mécanisme que l'en-tête :
+   position: fixed appliquée par effects.js (classe .iat-offre-subnav--
+   pinned) une fois que le scroll dépasse la position d'origine du
+   sous-menu, avec un "espaceur" (.iat-offre-subnav-spacer, hauteur
+   calculée en JS) pour éviter tout saut de mise en page au moment de
+   l'épinglage/désépinglage. Sous le bandeau d'en-tête fixe sur
+   mobile/tablette (--iat-header-h, même variable que la règle 1) ;
+   directement en haut au-delà de 900px puisque l'en-tête n'y est pas
+   fixe et a déjà défilé hors champ à ce moment-là.
+
+   La mise en évidence de la section active (indépendante de
+   l'épinglage) est gérée par effects.js via IntersectionObserver.
+   --------------------------------------------------------------------- */
+.iat-offre-subnav {
+  z-index: 120;
+  display: flex;
+  gap: 32px;
+  padding: 14px 80px;
+  background: var(--iat-fond);
+  border-bottom: 1px solid var(--iat-bordure);
+}
+.iat-offre-subnav--pinned {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.iat-offre-subnav-spacer {
+  height: 0px;
+}
+@media (max-width: 900px) {
+  .iat-offre-subnav {
+    padding: 14px 24px;
+    gap: 20px;
+  }
+  .iat-offre-subnav--pinned {
+    top: var(--iat-header-h, 0px);
+  }
+}
+.iat-offre-subnav__link {
+  font-family: var(--iat-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--iat-gris-texte);
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition:
+    color var(--iat-duree, 240ms) var(--iat-ease, ease),
+    border-color var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+.iat-offre-subnav__link:hover {
+  color: var(--iat-petrole);
+}
+.iat-offre-subnav__link--active {
+  color: var(--iat-petrole);
+  border-bottom-color: var(--iat-corail);
+}
+
+/* Ancres des 3 sous-sections (PME / Collectivités / Syndics) : marge de
+   défilement augmentée par rapport à l'origine (24px) pour tenir compte
+   du sous-menu qui peut désormais se trouver épinglé par-dessus au
+   moment du clic. */
+.iat-offre-anchor {
+  scroll-margin-top: 90px;
+}
+@media (max-width: 900px) {
+  .iat-offre-anchor {
+    scroll-margin-top: calc(var(--iat-header-h, 0px) + 90px);
+  }
+}
+
+/* ---------------------------------------------------------------------
    Accessibilité : si l'utilisateur a demandé "reduce motion" au niveau
    système, on neutralise tous les effets de mouvement ci-dessus (même
    principe que l'animation du logo déjà présente dans styles.css) sans
@@ -285,5 +366,8 @@ html {
   .iat-check__mark {
     animation: none;
     stroke-dashoffset: 0;
+  }
+  .iat-offre-subnav__link {
+    transition: none;
   }
 }
