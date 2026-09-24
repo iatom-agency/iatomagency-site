@@ -1,5 +1,6 @@
 // effects.js — améliorations UI "site moderne" (validé par Thomas le
-// 24/09/2026, complété le même jour pour la FAQ en accordéon). Fichier
+// 24/09/2026, complété le même jour pour la FAQ en accordéon et le
+// sous-menu scroll-spy d'offre.html). Fichier
 // indépendant de nav.js (menu burger, inchangé) et de consent.js (bandeau
 // cookies, inchangé). Suppression sans risque : retirer ce fichier + la
 // balise <script> correspondante dans build_site.py (page_shell) +
@@ -175,5 +176,126 @@
         item.classList.toggle("iat-faq__item--open", !wasOpen);
       });
     });
+  }
+
+  // -----------------------------------------------------------------
+  // 6) Sous-menu "scroll-spy" (offre.html uniquement) : PME / Collectivités
+  //    / Syndics.
+  //    a) Épinglage en haut de l'écran une fois le scroll dépassé sa
+  //       position d'origine (équivalent d'un position:sticky, non
+  //       utilisable ici — cf. commentaire dans effects.css, règle 10).
+  //       Un "espaceur" de même hauteur évite le saut de mise en page.
+  //    b) Mise en évidence de la section actuellement visible, via
+  //       IntersectionObserver — indépendante de l'épinglage, ne modifie
+  //       jamais le défilement lui-même.
+  // -----------------------------------------------------------------
+  var subnav = document.querySelector(".iat-offre-subnav");
+  if (subnav) {
+    var subnavSpacer = document.createElement("div");
+    subnavSpacer.className = "iat-offre-subnav-spacer";
+    subnavSpacer.setAttribute("aria-hidden", "true");
+    subnav.parentNode.insertBefore(subnavSpacer, subnav.nextSibling);
+
+    var subnavOriginalTop = subnav.getBoundingClientRect().top + window.scrollY;
+    var subnavTicking = false;
+
+    var siteHeader = document.querySelector(".site-header");
+
+    function syncSubnavPin() {
+      var mobile = window.matchMedia("(max-width: 900px)").matches;
+      var headerOffset = 0;
+      if (mobile) {
+        var raw = getComputedStyle(document.documentElement).getPropertyValue(
+          "--iat-header-h"
+        );
+        headerOffset = parseFloat(raw) || 0;
+      }
+      var shouldPin = window.scrollY >= subnavOriginalTop - headerOffset;
+      var isPinned = subnav.classList.contains("iat-offre-subnav--pinned");
+      // Sur mobile, l'en-tête peut lui-même se masquer au scroll vers le
+      // bas (règle 1) : dans ce cas le sous-menu remonte à 0 plutôt que de
+      // laisser un espace vide à la place de l'en-tête disparu.
+      if (mobile && isPinned) {
+        var headerCurrentlyHidden =
+          siteHeader && siteHeader.classList.contains("site-header--hidden");
+        subnav.style.top = (headerCurrentlyHidden ? 0 : headerOffset) + "px";
+      } else if (!mobile) {
+        // Retire toute valeur inline posée côté mobile : au-delà de 900px,
+        // la règle CSS de base (top: 0) doit reprendre la main.
+        subnav.style.top = "";
+      }
+      if (shouldPin && !isPinned) {
+        subnavSpacer.style.height = subnav.offsetHeight + "px";
+        subnav.classList.add("iat-offre-subnav--pinned");
+      } else if (!shouldPin && isPinned) {
+        subnav.classList.remove("iat-offre-subnav--pinned");
+        subnavSpacer.style.height = "0px";
+        subnav.style.top = "";
+      }
+      subnavTicking = false;
+    }
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!subnavTicking) {
+          window.requestAnimationFrame(syncSubnavPin);
+          subnavTicking = true;
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", syncSubnavPin);
+    syncSubnavPin();
+
+    var subnavLinks = document.querySelectorAll(".iat-offre-subnav__link");
+    if (subnavLinks.length && "IntersectionObserver" in window) {
+      var subnavTargets = [];
+      Array.prototype.forEach.call(subnavLinks, function (link) {
+        var target = document.getElementById(link.getAttribute("data-target"));
+        if (target) {
+          subnavTargets.push({ id: link.getAttribute("data-target"), el: target });
+        }
+      });
+
+      function setActiveSubnav(id) {
+        Array.prototype.forEach.call(subnavLinks, function (link) {
+          var isActive = link.getAttribute("data-target") === id;
+          link.classList.toggle("iat-offre-subnav__link--active", isActive);
+          if (isActive) {
+            link.setAttribute("aria-current", "true");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      }
+
+      var subnavObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var match = null;
+              subnavTargets.forEach(function (t) {
+                if (t.el === entry.target) {
+                  match = t;
+                }
+              });
+              if (match) {
+                setActiveSubnav(match.id);
+              }
+            }
+          });
+        },
+        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
+      );
+
+      subnavTargets.forEach(function (t) {
+        subnavObserver.observe(t.el);
+      });
+
+      if (subnavTargets.length) {
+        setActiveSubnav(subnavTargets[0].id);
+      }
+    }
   }
 })();
