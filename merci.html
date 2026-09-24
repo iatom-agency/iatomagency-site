@@ -9,10 +9,12 @@
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/styles.css">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/effects.css">
 </head>
 <body>
+<div class="iat-progress" aria-hidden="true"><div class="iat-progress__bar" id="scrollProgress"></div></div>
 <div class="page">
-  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 80px; border-bottom: 1px solid var(--iat-bordure);">
+  <div class="site-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px 80px; border-bottom: 1px solid var(--iat-bordure);">
     <a href="index.html" style="text-decoration:none;"><span class="iat-logo iat-logo--principal iat-logo--horizontal" role="img" aria-label="IATom Agency" style="font-size: 34px;"><span class="iat-logo__mot"><span class="iat-logo__i">I<span class="iat-logo__point"></span></span><span class="iat-logo__ia">A</span><span class="iat-logo__tom">Tom</span></span><span class="iat-logo__filet"></span><span class="iat-logo__descripteur-inline">Agency</span></span></a>
     <button class="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <div class="site-nav" style="display: flex; align-items: center; gap: 28px; font-family: var(--iat-font-texte); font-size: 15px;">
@@ -28,6 +30,7 @@
 <main>
 
   <div style="padding: 96px 80px; display: flex; flex-direction: column; gap: 20px; max-width: 720px;">
+    <svg class="iat-check" viewBox="0 0 52 52" width="56" height="56" aria-hidden="true" focusable="false"><circle class="iat-check__circle" cx="26" cy="26" r="24"/><path class="iat-check__mark" d="M14 27l7 7 16-16"/></svg>
     <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Message bien reçu.</h1>
     <p class="iat-text iat-text--chapo" style="margin: 0px;">Merci pour votre message — je reviens vers vous rapidement pour convenir d'un échange.</p>
     <div>
@@ -66,5 +69,6 @@
 </div>
 <script src="assets/nav.js" defer></script>
 <script src="assets/consent.js" defer></script>
+<script src="assets/effects.js" defer></script>
 </body>
 </html>

@@ -1,8 +1,9 @@
 // effects.js — améliorations UI "site moderne" (validé par Thomas le
-// 24/09/2026). Fichier indépendant de nav.js (menu burger, inchangé) et
-// de consent.js (bandeau cookies, inchangé). Suppression sans risque :
-// retirer ce fichier + la balise <script> correspondante dans
-// build_site.py (page_shell) + effects.css.
+// 24/09/2026, complété le même jour pour la FAQ en accordéon). Fichier
+// indépendant de nav.js (menu burger, inchangé) et de consent.js (bandeau
+// cookies, inchangé). Suppression sans risque : retirer ce fichier + la
+// balise <script> correspondante dans build_site.py (page_shell) +
+// effects.css.
 (function () {
   "use strict";
 
@@ -148,6 +149,31 @@
         btn.classList.add("iat-button--loading");
         btn.textContent = "Envoi en cours…";
       }
+    });
+  }
+
+  // -----------------------------------------------------------------
+  // 5) FAQ en accordéon (accueil). Une seule question ouverte à la
+  //    fois : au clic, on ferme les autres puis on bascule celle
+  //    cliquée. L'animation d'ouverture/fermeture est entièrement en
+  //    CSS (grid-template-rows) — ce script ne fait que basculer
+  //    aria-expanded et une classe.
+  // -----------------------------------------------------------------
+  var faqButtons = document.querySelectorAll(".iat-faq__question");
+  if (faqButtons.length) {
+    Array.prototype.forEach.call(faqButtons, function (btn) {
+      btn.addEventListener("click", function () {
+        var item = btn.closest(".iat-faq__item");
+        var wasOpen = btn.getAttribute("aria-expanded") === "true";
+        Array.prototype.forEach.call(faqButtons, function (other) {
+          if (other !== btn) {
+            other.setAttribute("aria-expanded", "false");
+            other.closest(".iat-faq__item").classList.remove("iat-faq__item--open");
+          }
+        });
+        btn.setAttribute("aria-expanded", String(!wasOpen));
+        item.classList.toggle("iat-faq__item--open", !wasOpen);
+      });
     });
   }
 })();
