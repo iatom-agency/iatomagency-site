@@ -1,0 +1,164 @@
+/* effects.css — améliorations UI "site moderne" (sept. 2026, validé par
+   Thomas le 24/09/2026 : en-tête sticky, apparition au scroll, survol
+   cartes/boutons, barre de progression, défilement fluide, feedback
+   formulaire contact — mode sombre explicitement exclu du périmètre).
+
+   Fichier additif et autonome : n'importe quelle règle ci-dessous peut être
+   retirée sans toucher à site.css ni styles.css. Pour tout annuler d'un
+   coup : supprimer ce fichier + effects.js + les balises <link>/<script>
+   correspondantes + la classe "site-header" injectée par add_mobile_nav
+   dans build_site.py. */
+
+/* ---------------------------------------------------------------------
+   1) En-tête sticky + masquage au scroll vers le bas / réapparition au
+   scroll vers le haut — mobile ET tablette (même seuil que le burger).
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  /* position: sticky ne fonctionne pas ici : .page a "overflow-x: hidden"
+     (nécessaire pour éviter le débordement horizontal des éléments à
+     largeur fixe du design), ce qui force overflow-y à "auto" par la
+     spec CSS et neutralise le sticky de tout descendant. On utilise donc
+     position: fixed, ancré à la fenêtre plutôt qu'à .page, avec un
+     padding-top compensatoire sur <main> (calculé par effects.js selon
+     la hauteur réelle de l'en-tête) pour ne pas masquer le haut de page. */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 150;
+    background: var(--iat-fond);
+    transition:
+      transform 0.25s var(--iat-ease, ease),
+      box-shadow 0.25s var(--iat-ease, ease);
+  }
+  .site-header--hidden {
+    transform: translateY(-100%);
+  }
+  .site-header--scrolled {
+    box-shadow: var(--iat-ombre);
+  }
+  main {
+    padding-top: var(--iat-header-h, 0px);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   2) Apparition progressive au scroll (sections de <main> + cartes).
+   Appliquée par effects.js via IntersectionObserver. --iat-reveal-order
+   sert à décaler légèrement les cartes d'une même grille (effet de
+   cascade) ; 0 par défaut pour les blocs qui ne sont pas des cartes.
+   --------------------------------------------------------------------- */
+.iat-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms var(--iat-ease, ease),
+    transform 600ms var(--iat-ease, ease);
+  transition-delay: calc(var(--iat-reveal-order, 0) * 80ms);
+}
+.iat-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------
+   3) Survol plus "vivant" sur les cartes et les boutons — s'ajoute aux
+   transitions de couleur déjà définies dans styles.css, ne les remplace
+   pas (une seule propriété "transition" par sélecteur au final, le
+   navigateur combine simplement les deux fichiers).
+   --------------------------------------------------------------------- */
+.iat-card {
+  transition:
+    transform var(--iat-duree, 240ms) var(--iat-ease, ease),
+    box-shadow var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+.iat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--iat-ombre);
+}
+.iat-button {
+  transition:
+    transform var(--iat-duree, 240ms) var(--iat-ease, ease),
+    box-shadow var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+.iat-button--primary:hover:not(:disabled),
+.iat-button--secondary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--iat-ombre);
+}
+
+/* ---------------------------------------------------------------------
+   4) Barre de progression de lecture — fine ligne fixée en haut de
+   l'écran, couleurs de marque, au-dessus de tout le reste (z-index 300).
+   --------------------------------------------------------------------- */
+.iat-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 300;
+  background: transparent;
+  pointer-events: none;
+}
+.iat-progress__bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--iat-corail), var(--iat-ambre));
+  transition: width 100ms linear;
+}
+
+/* ---------------------------------------------------------------------
+   5) Défilement fluide vers les ancres (ex. sommaire de offre.html).
+   --------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------------------------------------------------------------------
+   6) Feedback d'envoi du formulaire de contact — le bouton passe déjà en
+   opacité réduite via .iat-button:disabled (styles.css) ; on ajoute
+   juste un curseur "attente" tant que l'envoi est en cours.
+   --------------------------------------------------------------------- */
+.iat-button--loading {
+  cursor: wait;
+}
+
+/* ---------------------------------------------------------------------
+   Accessibilité : si l'utilisateur a demandé "reduce motion" au niveau
+   système, on neutralise tous les effets de mouvement ci-dessus (même
+   principe que l'animation du logo déjà présente dans styles.css) sans
+   rien retirer côté contenu ou fonctionnalité.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    transition: none;
+  }
+  .site-header--hidden {
+    transform: none;
+  }
+  .iat-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .iat-card,
+  .iat-button {
+    transition:
+      background-color var(--iat-duree, 240ms) var(--iat-ease, ease),
+      color var(--iat-duree, 240ms) var(--iat-ease, ease),
+      border-color var(--iat-duree, 240ms) var(--iat-ease, ease);
+  }
+  .iat-card:hover,
+  .iat-button--primary:hover:not(:disabled),
+  .iat-button--secondary:hover:not(:disabled) {
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .iat-progress__bar {
+    transition: none;
+  }
+}
