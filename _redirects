@@ -1,0 +1,12 @@
+# Redirection permanente des domaines .com et .eu vers le domaine principal .fr
+# (mis en place le 2026-09-25 suite au passage de la redirection registrar OVH,
+# qui ne gère pas le HTTPS, vers une redirection gérée par Netlify avec
+# certificat SSL automatique Let's Encrypt).
+https://iatomagency.com/*     https://iatomagency.fr/:splat   301!
+http://iatomagency.com/*      https://iatomagency.fr/:splat   301!
+https://www.iatomagency.com/* https://iatomagency.fr/:splat   301!
+http://www.iatomagency.com/*  https://iatomagency.fr/:splat   301!
+https://iatomagency.eu/*      https://iatomagency.fr/:splat   301!
+http://iatomagency.eu/*       https://iatomagency.fr/:splat   301!
+https://www.iatomagency.eu/*  https://iatomagency.fr/:splat   301!
+http://www.iatomagency.eu/*   https://iatomagency.fr/:splat   301!
