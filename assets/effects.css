@@ -5,6 +5,11 @@
    Complété le 24/09/2026 (deuxième vague, validée par Thomas) : transition
    douce entre les pages, FAQ en accordéon (accueil), coche animée sur la
    page de confirmation (merci.html), sous-menu scroll-spy (offre.html).
+   Complété le 25/09/2026 (troisième vague, niveaux 1 et 2 validés par
+   Thomas) : pulsation du point du logo, soulignement animé de la nav,
+   flèche des CTA au survol, reveal dédié du titre d'accueil, ligne de
+   connexion des étapes (méthode.html), focus animé des champs de contact,
+   spinner d'envoi (contact.html).
 
    Fichier additif et autonome : n'importe quelle règle ci-dessous peut être
    retirée sans toucher à site.css ni styles.css. Pour tout annuler d'un
@@ -320,6 +325,188 @@ html {
 }
 
 /* ---------------------------------------------------------------------
+   11) Point du logo qui respire — pulsation douce et continue, sur toutes
+   les occurrences du logo (en-tête, pied de page), quelle que soit la
+   variante. Purement décoratif, n'affecte ni la position ni la taille de
+   l'élément (déjà positionné en absolu par styles.css) : seules opacity
+   et transform sont animées. Si la classe .iat-logo--anime (déjà définie
+   dans styles.css pour une animation ponctuelle "le point tombe" au
+   chargement) est un jour posée sur un logo, elle reprend la main sans
+   conflit — sa règle est plus spécifique que celle-ci.
+   --------------------------------------------------------------------- */
+@keyframes iat-logo-respire {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.35);
+  }
+}
+.iat-logo__point {
+  animation: iat-logo-respire 3200ms ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* ---------------------------------------------------------------------
+   12) Soulignement animé de la navigation au survol — trait corail qui
+   grandit de gauche à droite (0 → 100% de la largeur du lien). Exclut le
+   lien de la page active : celui-ci garde son soulignement statique déjà
+   posé par build_site.py (linkify_header_nav), pour éviter un double
+   trait au survol.
+   --------------------------------------------------------------------- */
+.site-nav a {
+  position: relative;
+}
+.site-nav a:not([aria-current="page"])::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -4px;
+  height: 2px;
+  background: var(--iat-corail);
+  transition: right var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+.site-nav a:not([aria-current="page"]):hover::after {
+  right: 0;
+}
+
+/* ---------------------------------------------------------------------
+   13) Flèche des boutons/CTA principaux et secondaires au survol — en
+   plus du léger soulèvement déjà en place (règle 3). Positionnée en
+   absolu dans la zone de padding du bouton (jamais dans la zone de texte,
+   quelle que soit la longueur du libellé) : n'affecte donc jamais la
+   largeur ni le centrage du bouton, contrairement à un ajout dans le flux
+   normal. Exclue des boutons tertiaires (simples liens soulignés).
+   --------------------------------------------------------------------- */
+.iat-button--primary,
+.iat-button--secondary {
+  position: relative;
+}
+.iat-button--primary::after,
+.iat-button--secondary::after {
+  content: "→";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  opacity: 0;
+  transform: translate(-6px, -50%);
+  transition:
+    opacity var(--iat-duree, 240ms) var(--iat-ease, ease),
+    transform var(--iat-duree, 240ms) var(--iat-ease, ease);
+  pointer-events: none;
+}
+.iat-button--primary:hover:not(:disabled)::after,
+.iat-button--secondary:hover:not(:disabled)::after {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* ---------------------------------------------------------------------
+   14) Titre de l'accueil ("L'IA, version humaine.") : apparition dédiée
+   au chargement, plus marquée que le fade générique appliqué au reste de
+   <main> (règle 2 ci-dessus, qui continue de s'appliquer au bloc parent
+   — les deux effets se superposent sans se contredire, même direction et
+   même famille d'easing). .iat-heading--display n'existe qu'une fois sur
+   tout le site (le H1 de l'accueil) : aucun risque de débordement sur
+   d'autres pages.
+   --------------------------------------------------------------------- */
+@keyframes iat-hero-titre {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.iat-heading--display {
+  animation: iat-hero-titre 900ms var(--iat-ease, ease) 150ms both;
+}
+
+/* ---------------------------------------------------------------------
+   15) Méthode : ligne de connexion entre les 3 étapes (Observer /
+   Diagnostiquer / Accompagner), qui se dessine au fil du scroll
+   (méthode.html uniquement). Piste fixe discrète + remplissage corail
+   dont la hauteur est pilotée en JS (effects.js, section 7) selon la
+   progression du lecteur entre le premier et le dernier numéro. Purement
+   décorative (aria-hidden) : la grille de contenu (grid-methode-step)
+   n'est pas modifiée. Masquée sous 900px, où grid-methode-step repasse
+   en une colonne (site.css) — la ligne, alignée sur la colonne des
+   numéros à 120px, n'a alors plus de sens géométrique.
+   --------------------------------------------------------------------- */
+.iat-methode-etapes {
+  position: relative;
+}
+.iat-methode-ligne {
+  position: absolute;
+  top: 32px;
+  bottom: 32px;
+  left: 60px;
+  width: 2px;
+  background: var(--iat-bordure);
+  transform: translateX(-1px);
+}
+.iat-methode-ligne__remplissage {
+  width: 100%;
+  height: 0%;
+  background: var(--iat-corail);
+}
+@media (max-width: 900px) {
+  .iat-methode-ligne {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   16) Contact : trait corail qui se dessine sous le champ actif (au
+   focus), en plus de l'anneau de focus déjà présent (styles.css,
+   accessibilité — non touché). :focus-within sur .iat-field plutôt que
+   :focus sur l'input : couvre aussi bien les champs texte que le select
+   et le textarea sans règle dédiée à chacun.
+   --------------------------------------------------------------------- */
+.iat-field {
+  position: relative;
+}
+.iat-field::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--iat-corail);
+  transition: width var(--iat-duree, 240ms) var(--iat-ease, ease);
+  pointer-events: none;
+}
+.iat-field:focus-within::after {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------
+   17) Contact : petit indicateur de chargement (spinner SVG en rotation)
+   inséré par effects.js à côté du texte "Envoi en cours…", même famille
+   technique que la coche animée de merci.html (cercle SVG, stroke
+   corail) mais en rotation continue plutôt qu'en tracé unique — plus
+   adapté à une attente de durée inconnue.
+   --------------------------------------------------------------------- */
+@keyframes iat-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.iat-spinner {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: -3px;
+  animation: iat-spin 800ms linear infinite;
+}
+
+/* ---------------------------------------------------------------------
    Accessibilité : si l'utilisateur a demandé "reduce motion" au niveau
    système, on neutralise tous les effets de mouvement ci-dessus (même
    principe que l'animation du logo déjà présente dans styles.css) sans
@@ -369,5 +556,29 @@ html {
   }
   .iat-offre-subnav__link {
     transition: none;
+  }
+  .iat-logo__point {
+    animation: none;
+  }
+  .site-nav a:not([aria-current="page"])::after {
+    transition: none;
+  }
+  .iat-button--primary::after,
+  .iat-button--secondary::after {
+    transition: none;
+  }
+  .iat-heading--display {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .iat-methode-ligne__remplissage {
+    height: 100%;
+  }
+  .iat-field::after {
+    transition: none;
+  }
+  .iat-spinner {
+    animation: none;
   }
 }

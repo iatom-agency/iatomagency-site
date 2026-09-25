@@ -1,6 +1,10 @@
 // effects.js — améliorations UI "site moderne" (validé par Thomas le
 // 24/09/2026, complété le même jour pour la FAQ en accordéon et le
-// sous-menu scroll-spy d'offre.html). Fichier
+// sous-menu scroll-spy d'offre.html). Complété le 25/09/2026 (3e vague,
+// niveaux 1 et 2) : ligne de connexion des étapes de méthode.html et
+// spinner d'envoi du formulaire de contact — la pulsation du logo, le
+// soulignement de nav et la flèche des CTA sont purement CSS (voir
+// effects.css) et n'ont pas besoin de logique ici. Fichier
 // indépendant de nav.js (menu burger, inchangé) et de consent.js (bandeau
 // cookies, inchangé). Suppression sans risque : retirer ce fichier + la
 // balise <script> correspondante dans build_site.py (page_shell) +
@@ -148,7 +152,19 @@
       if (btn && !btn.disabled) {
         btn.disabled = true;
         btn.classList.add("iat-button--loading");
-        btn.textContent = "Envoi en cours…";
+        if (reduceMotion) {
+          btn.textContent = "Envoi en cours…";
+        } else {
+          // Même famille technique que la coche de merci.html (cercle SVG,
+          // trait corail via currentColor) mais en rotation continue plutôt
+          // qu'en tracé unique : la durée de l'envoi n'est pas connue à
+          // l'avance (POST natif Netlify Forms, pas d'AJAX).
+          btn.innerHTML =
+            '<svg class="iat-spinner" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">' +
+            '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" ' +
+            'stroke-width="3" stroke-linecap="round" stroke-dasharray="42 100"></circle>' +
+            "</svg>Envoi en cours…";
+        }
       }
     });
   }
@@ -295,6 +311,56 @@
 
       if (subnavTargets.length) {
         setActiveSubnav(subnavTargets[0].id);
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------
+  // 7) Méthode : ligne de connexion qui se dessine entre les 3 étapes
+  //    (methode.html uniquement) au fil du scroll. La hauteur du
+  //    remplissage suit la position d'un point de lecture fixé à 55% de
+  //    la hauteur de la fenêtre (légèrement sous le centre) entre le
+  //    milieu du premier numéro et le milieu du dernier — indépendant de
+  //    l'épinglage ou de tout autre mécanisme ci-dessus.
+  // -----------------------------------------------------------------
+  var methodeLigne = document.querySelector(".iat-methode-ligne");
+  if (methodeLigne) {
+    var methodeFill = methodeLigne.querySelector(".iat-methode-ligne__remplissage");
+    var methodeNums = document.querySelectorAll(".iat-methode-num");
+
+    if (methodeFill && methodeNums.length >= 2) {
+      if (reduceMotion) {
+        methodeFill.style.height = "100%";
+      } else {
+        var firstNum = methodeNums[0];
+        var lastNum = methodeNums[methodeNums.length - 1];
+        var methodeTicking = false;
+
+        function syncMethodeLigne() {
+          var firstRect = firstNum.getBoundingClientRect();
+          var lastRect = lastNum.getBoundingClientRect();
+          var start = firstRect.top + firstRect.height / 2;
+          var end = lastRect.top + lastRect.height / 2;
+          var span = end - start;
+          var pointDeLecture = window.innerHeight * 0.55;
+          var progress = span > 0 ? (pointDeLecture - start) / span : 0;
+          progress = Math.max(0, Math.min(1, progress));
+          methodeFill.style.height = progress * 100 + "%";
+          methodeTicking = false;
+        }
+
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (!methodeTicking) {
+              window.requestAnimationFrame(syncMethodeLigne);
+              methodeTicking = true;
+            }
+          },
+          { passive: true }
+        );
+        window.addEventListener("resize", syncMethodeLigne);
+        syncMethodeLigne();
       }
     }
   }
