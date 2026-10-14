@@ -25,5 +25,4 @@ sur Netlify, sans configuration supplémentaire.
 Converti à partir de la maquette Claude Design (composants IATomDS) en HTML/CSS
 statique, page par page, en conservant fidèlement le design approuvé.
 
-⚠️ Point encore ouvert : le numéro SIRET (mentions-legales.html) est à compléter
-dès l'immatriculation auto-entrepreneur de Thomas Blachère.
+Le numéro SIRET (953 734 803 00026) figure dans mentions-legales.html.
