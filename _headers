@@ -1,0 +1,10 @@
+# En-têtes de sécurité appliqués par Netlify à toutes les pages.
+# Volontairement sans Content-Security-Policy stricte : le site utilise des
+# styles intégrés aux pages, Google Analytics (après consentement) et un
+# calendrier Google en iframe ; une CSP stricte risquerait de les bloquer.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
