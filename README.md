@@ -25,4 +25,5 @@ sur Netlify, sans configuration supplémentaire.
 Converti à partir de la maquette Claude Design (composants IATomDS) en HTML/CSS
 statique, page par page, en conservant fidèlement le design approuvé.
 
-Le numéro SIRET (953 734 803 00026) figure dans mentions-legales.html.
+Le SIRET (953 734 803 00026), le numéro RCS (R.C.S. Nice 953 734 803) et le code APE (6202A)
+figurent dans mentions-legales.html.
