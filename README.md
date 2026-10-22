@@ -27,3 +27,5 @@ statique, page par page, en conservant fidèlement le design approuvé.
 
 Le SIRET (953 734 803 00026), le numéro RCS (R.C.S. Nice 953 734 803) et le code APE (6202A)
 figurent dans mentions-legales.html.
+
+Publication : chaque fusion sur `main` déclenche un déploiement Netlify automatique.
