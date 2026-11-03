@@ -1,0 +1,485 @@
+/* survol.css — interactions au passage de la souris : tuiles qui changent
+   de fond et de motif, lueur qui suit le curseur, inclinaison 3D, boutons
+   aimantés, bandeau défilant, survols de la Méthode, de
+   la FAQ, du pied de page et de la photo (novembre 2026). Fichier additif,
+   dans l'esprit de effects.css / refonte.css : pour tout annuler, retirer
+   ce fichier, survol.js et les balises correspondantes.
+
+   Principe : survol.js pose la classe .iat-tuile sur les blocs concernés et
+   bascule .iat-actif quand la souris (ou le clavier : focus) est dessus.
+   Aucun effet n'existe au toucher, et tout mouvement est coupé en mode
+   « réduire les animations » (les changements de couleur restent). */
+
+:root {
+  /* Motifs en SVG intégré (clair = sur fond sombre, sombre = sur fond clair) */
+  --motif-points: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='4' cy='4' r='1.8' fill='%23F7F2EA' fill-opacity='.4'/%3E%3C/svg%3E");
+  --motif-colonnes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='1.6' height='28' fill='%23F7F2EA' fill-opacity='.28'/%3E%3C/svg%3E");
+  --motif-grille: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cpath d='M0 .8H28M.8 0V28' stroke='%23F7F2EA' stroke-opacity='.25' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+  --motif-hachures: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M0 20L20 0M-5 5L5 -5M15 25L25 15' stroke='%23F7F2EA' stroke-opacity='.3' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+  --motif-diagonales: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-10 10L10 -10M30 50L50 30' stroke='%23E8A33D' stroke-opacity='.4' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+  --motif-points-sombre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='4' cy='4' r='1.8' fill='%230F4C55' fill-opacity='.2'/%3E%3C/svg%3E");
+  --motif-hachures-sombre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M0 20L20 0M-5 5L5 -5M15 25L25 15' stroke='%230F4C55' stroke-opacity='.14' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------------------------------
+   1) Tuiles : fond qui bascule, motif qui défile, lueur qui suit la souris.
+   Les deux couches (motif, lueur) sont des pseudo-éléments sous le contenu
+   (z-index négatif dans un contexte d'empilement isolé).
+   --------------------------------------------------------------------- */
+.iat-tuile {
+  position: relative;
+  isolation: isolate;
+  transition:
+    background-color 450ms var(--iat-ease, ease),
+    box-shadow 450ms var(--iat-ease, ease),
+    transform 600ms var(--iat-ease, ease),
+    opacity 600ms var(--iat-ease, ease);
+}
+.iat-tuile::before,
+.iat-tuile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  transition: opacity 450ms var(--iat-ease, ease);
+}
+.iat-tuile::before {
+  background-image: var(--motif);
+  background-size: var(--taille, 24px);
+}
+.iat-tuile::after {
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    var(--lueur, rgba(232, 163, 61, 0.22)),
+    transparent 65%
+  );
+}
+.iat-tuile.iat-actif::before,
+.iat-tuile.iat-actif::after {
+  opacity: 1;
+}
+.iat-tuile.iat-actif::before {
+  animation: iat-motif 8s linear infinite;
+}
+@keyframes iat-motif {
+  to {
+    background-position: var(--taille, 24px) var(--taille, 24px);
+  }
+}
+.iat-tuile[data-motif="points"] { --motif: var(--motif-points); --taille: 24px; }
+.iat-tuile[data-motif="colonnes"] { --motif: var(--motif-colonnes); --taille: 28px; }
+.iat-tuile[data-motif="grille"] { --motif: var(--motif-grille); --taille: 28px; }
+.iat-tuile[data-motif="hachures"] { --motif: var(--motif-hachures); --taille: 20px; }
+.iat-tuile[data-motif="diagonales"] { --motif: var(--motif-diagonales); --taille: 40px; }
+.iat-tuile[data-motif="points-sombre"] { --motif: var(--motif-points-sombre); --taille: 24px; }
+.iat-tuile[data-motif="hachures-sombre"] { --motif: var(--motif-hachures-sombre); --taille: 20px; }
+
+/* Tuiles qui s'inversent (fond pétrole, texte clair) : cartes des cibles et
+   exemples concrets. !important car le fond est posé en ligne dans le HTML. */
+.iat-tuile--sombre :is(.iat-heading, .iat-text, .iat-cible__qui, .iat-exemple__apres, .iat-exemple__avant, .iat-exemple__garde, .iat-note, .iat-exemple__unite) {
+  transition: color 450ms var(--iat-ease, ease), border-color 450ms var(--iat-ease, ease);
+}
+.iat-tuile--sombre {
+  overflow: hidden;
+}
+.iat-tuile--sombre.iat-actif {
+  background-color: var(--iat-petrole) !important;
+  box-shadow: 0 18px 40px rgba(11, 46, 51, 0.28);
+  --lueur: rgba(232, 163, 61, 0.28);
+}
+.iat-tuile--sombre.iat-actif :is(.iat-heading, .iat-text) {
+  color: var(--iat-blanc-chaud);
+}
+.iat-tuile--sombre.iat-actif .iat-cible__qui {
+  color: var(--iat-ambre);
+}
+.iat-tuile--sombre.iat-actif .iat-exemple__avant {
+  color: var(--iat-sauge);
+  text-decoration-color: var(--iat-ambre);
+}
+.iat-tuile--sombre.iat-actif .iat-exemple__apres,
+.iat-tuile--sombre.iat-actif .iat-exemple__apres .iat-exemple__chiffre,
+.iat-tuile--sombre.iat-actif .iat-exemple__apres .iat-exemple__unite {
+  color: var(--iat-ambre);
+}
+.iat-tuile--sombre.iat-actif .iat-exemple__garde {
+  color: var(--iat-blanc-chaud);
+  border-top-color: rgba(247, 242, 234, 0.3);
+}
+.iat-tuile--sombre.iat-actif .iat-button--secondary {
+  color: var(--iat-blanc-chaud);
+  border-color: var(--iat-blanc-chaud);
+}
+.iat-tuile--sombre.iat-actif .iat-button--secondary:hover {
+  background: var(--iat-blanc-chaud);
+  color: var(--iat-petrole);
+}
+.iat-tuile--sombre.iat-actif .iat-cible__img {
+  scale: 1.07;
+  translate: var(--ix, 0px) 0;
+}
+.iat-tuile--sombre .iat-cible__img {
+  transition:
+    scale 700ms var(--iat-ease, ease),
+    translate 250ms var(--iat-ease, ease);
+}
+/* le petit trait corail de chaque carte s'allonge */
+.iat-tuile--sombre > div:first-of-type[style*="height: 2px"] {
+  transition: width 600ms var(--iat-ease, ease);
+}
+.iat-tuile--sombre.iat-actif > div:first-of-type[style*="height: 2px"] {
+  width: 96px !important;
+  background: var(--iat-ambre) !important;
+}
+
+/* Tuiles claires (cartes sable, avant/après) : seuls motif et lueur */
+.iat-tuile--douce {
+  --lueur: rgba(217, 106, 71, 0.16);
+}
+
+/* Bandeau d'appel à l'action (fond pétrole) : motif et lueur ambre */
+.iat-tuile--bandeau {
+  overflow: hidden;
+  --lueur: rgba(232, 163, 61, 0.26);
+}
+.iat-tuile--bandeau .iat-heading {
+  transition: letter-spacing 700ms var(--iat-ease, ease);
+}
+.iat-tuile--bandeau.iat-actif .iat-heading {
+  letter-spacing: 0.005em;
+}
+
+/* Inclinaison 3D (cartes des cibles, exemples, visuel d'accueil) */
+.iat-incline {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+.iat-incline.iat-actif {
+  transition:
+    background-color 450ms var(--iat-ease, ease),
+    box-shadow 450ms var(--iat-ease, ease),
+    transform 140ms ease-out;
+}
+
+/* ---------------------------------------------------------------------
+   2) Accueil : le visuel suit la souris, une trame de points se révèle
+   sous le curseur et une lueur éclaire le fond.
+   --------------------------------------------------------------------- */
+.iat-hero {
+  position: relative;
+  isolation: isolate;
+}
+.iat-hero::before,
+.iat-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms var(--iat-ease, ease);
+}
+.iat-hero::before {
+  background: radial-gradient(
+    520px circle at var(--hx, 50%) var(--hy, 50%),
+    rgba(232, 163, 61, 0.16),
+    transparent 65%
+  );
+}
+.iat-hero::after {
+  background-image: var(--motif-points-sombre);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(260px circle at var(--hx, 50%) var(--hy, 50%), #000, transparent);
+  mask-image: radial-gradient(260px circle at var(--hx, 50%) var(--hy, 50%), #000, transparent);
+}
+.iat-hero.iat-actif::before,
+.iat-hero.iat-actif::after {
+  opacity: 1;
+}
+.iat-hero__visuel {
+  transition: transform 700ms var(--iat-ease, ease);
+}
+.iat-hero__visuel.iat-incline {
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+.iat-hero__visuel img {
+  translate: calc(var(--px, 0) * -16px) calc(var(--py, 0) * -16px);
+  transition: translate 500ms var(--iat-ease, ease);
+}
+.iat-hero__lignes {
+  translate: calc(var(--px, 0) * 12px) calc(var(--py, 0) * 12px);
+  transition: translate 500ms var(--iat-ease, ease);
+}
+
+/* ---------------------------------------------------------------------
+   3) Boutons aimantés (translate individuel : sans conflit avec le
+   transform du survol déjà défini dans effects.css).
+   --------------------------------------------------------------------- */
+.iat-magnet {
+  translate: var(--tx, 0px) var(--ty, 0px);
+  transition:
+    translate 300ms var(--iat-ease, ease),
+    transform var(--iat-duree, 240ms) var(--iat-ease, ease),
+    box-shadow var(--iat-duree, 240ms) var(--iat-ease, ease),
+    background-color var(--iat-duree, 240ms) var(--iat-ease, ease),
+    color var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+
+/* ---------------------------------------------------------------------
+   4) Bandeau défilant sous l'accueil : mots en contour qui se remplissent
+   au survol ; le défilement se met en pause.
+   --------------------------------------------------------------------- */
+.iat-defile {
+  overflow: hidden;
+  padding: 22px 0;
+  margin-bottom: 72px;
+  background: var(--iat-sable);
+  border-top: 1px solid var(--iat-bordure);
+  border-bottom: 1px solid var(--iat-bordure);
+}
+.iat-defile__piste {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: max-content;
+  animation: iat-defile 46s linear infinite;
+}
+.iat-defile:hover .iat-defile__piste {
+  animation-play-state: paused;
+}
+.iat-defile__mot {
+  font-family: var(--iat-font-titre);
+  font-size: 38px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: transparent;
+  -webkit-text-stroke: 1.2px var(--iat-petrole);
+  white-space: nowrap;
+  transition: color 350ms var(--iat-ease, ease), -webkit-text-stroke-color 350ms var(--iat-ease, ease);
+  cursor: default;
+}
+.iat-defile__mot:hover {
+  color: var(--iat-petrole);
+}
+.iat-defile__mot--calli {
+  font-family: var(--iat-font-signature);
+  font-size: 46px;
+  -webkit-text-stroke: 0;
+  color: var(--iat-corail);
+}
+.iat-defile__mot--calli:hover {
+  color: var(--iat-petrole);
+}
+.iat-defile__sep {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--iat-ambre);
+  transition: transform 400ms var(--iat-ease, ease);
+}
+.iat-defile:hover .iat-defile__sep {
+  transform: scale(1.5);
+}
+@keyframes iat-defile {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 700px) {
+  .iat-defile__mot { font-size: 28px; }
+  .iat-defile__mot--calli { font-size: 34px; }
+  .iat-defile { margin-bottom: 48px; }
+}
+
+/* ---------------------------------------------------------------------
+   5) Méthode : au survol, un fond sable glisse derrière l'étape, le
+   numéro grossit et le titre se décale.
+   --------------------------------------------------------------------- */
+@media (hover: hover) and (pointer: fine) {
+  .grid-methode-step {
+    position: relative;
+    isolation: isolate;
+  }
+  .grid-methode-step::before {
+    content: "";
+    position: absolute;
+    inset: 0 -20px;
+    z-index: -1;
+    background: var(--iat-sable);
+    border-radius: 8px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 550ms var(--iat-ease, ease);
+  }
+  .grid-methode-step:hover::before {
+    transform: scaleX(1);
+  }
+  .grid-methode-step .iat-methode-num {
+    display: inline-block;
+    transform-origin: left center;
+  }
+  .grid-methode-step:hover .iat-methode-num {
+    scale: 1.25;
+  }
+  .grid-methode-step:hover > div:last-child {
+    translate: 10px 0;
+  }
+  .grid-methode-step > div:last-child,
+  .grid-methode-step .iat-methode-num {
+    transition-property: opacity, transform, color, scale, translate;
+  }
+
+  /* FAQ : trait corail et fond qui glissent, question décalée */
+  .iat-faq__item {
+    position: relative;
+    isolation: isolate;
+  }
+  .iat-faq__item::before {
+    content: "";
+    position: absolute;
+    inset: 0 -12px;
+    z-index: -1;
+    background: var(--iat-sable);
+    border-radius: 6px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 500ms var(--iat-ease, ease);
+  }
+  .iat-faq__item::after {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 10px;
+    bottom: 10px;
+    width: 3px;
+    background: var(--iat-corail);
+    border-radius: 2px;
+    transform: scaleY(0);
+    transition: transform 400ms var(--iat-ease, ease);
+  }
+  .iat-faq__item:hover::before {
+    transform: scaleX(1);
+  }
+  .iat-faq__item:hover::after {
+    transform: scaleY(1);
+  }
+  .iat-faq__question {
+    transition: translate 350ms var(--iat-ease, ease), color 250ms ease;
+  }
+  .iat-faq__item:hover .iat-faq__question {
+    translate: 8px 0;
+  }
+
+  /* Pied de page : les liens glissent avec un trait corail */
+  .site-footer-cols a {
+    display: inline-block;
+    background-image: linear-gradient(var(--iat-corail), var(--iat-corail));
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    transition: background-size 350ms var(--iat-ease, ease), translate 350ms var(--iat-ease, ease);
+  }
+  .site-footer-cols a:hover {
+    background-size: 100% 2px;
+    translate: 4px 0;
+  }
+
+  /* Logo : le point rebondit */
+  .iat-logo:hover .iat-logo__point {
+    animation: iat-point-saut 700ms var(--iat-ease, ease);
+  }
+  @keyframes iat-point-saut {
+    0% { transform: translateY(0) scale(1); }
+    35% { transform: translateY(-9px) scale(1.5); }
+    70% { transform: translateY(2px) scale(0.9); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  /* Photo : cadre corail décalé et léger zoom */
+  .iat-photo {
+    position: relative;
+    overflow: visible;
+  }
+  .iat-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--iat-corail);
+    border-radius: inherit;
+    translate: 0 0;
+    opacity: 0;
+    z-index: -1;
+    transition: translate 500ms var(--iat-ease, ease), opacity 400ms ease;
+    pointer-events: none;
+  }
+  .iat-photo:hover::after {
+    translate: 14px 14px;
+    opacity: 1;
+  }
+  .iat-photo__image {
+    transition: scale 700ms var(--iat-ease, ease);
+  }
+  .iat-photo:hover .iat-photo__image {
+    scale: 1.03;
+  }
+
+  /* Pastilles « pour qui » : le fond se remplit de gauche à droite */
+  .iat-pour-qui a {
+    background-image: linear-gradient(var(--iat-petrole), var(--iat-petrole));
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    background-position: 0 0;
+    transition:
+      background-size 400ms var(--iat-ease, ease),
+      color 300ms ease,
+      translate 300ms var(--iat-ease, ease),
+      transform var(--iat-duree, 240ms) var(--iat-ease, ease);
+  }
+  .iat-pour-qui a:hover {
+    background-color: transparent;
+    background-image: linear-gradient(var(--iat-petrole), var(--iat-petrole));
+    background-size: 100% 100%;
+    color: var(--iat-blanc-chaud);
+  }
+
+  /* Champs du formulaire : léger relief au survol */
+  .iat-field:hover :is(input, select, textarea) {
+    border-color: var(--iat-petrole);
+    box-shadow: 0 4px 14px rgba(15, 76, 85, 0.1);
+  }
+}
+.iat-photo {
+  isolation: isolate;
+}
+
+/* ---------------------------------------------------------------------
+   6) Mouvement réduit : plus de déplacement, d'inclinaison, de défilement
+   ni de curseur animé ; les changements de couleur restent.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .iat-incline,
+  .iat-incline.iat-actif,
+  .iat-hero__visuel.iat-incline {
+    transform: none;
+  }
+  .iat-tuile.iat-actif::before {
+    animation: none;
+  }
+  .iat-tuile--sombre.iat-actif .iat-cible__img,
+  .iat-hero__visuel img,
+  .iat-hero__lignes,
+  .iat-magnet {
+    scale: none;
+    translate: none;
+  }
+  .iat-defile__piste {
+    animation: none;
+  }
+  .iat-logo:hover .iat-logo__point {
+    animation: none;
+  }
+}
