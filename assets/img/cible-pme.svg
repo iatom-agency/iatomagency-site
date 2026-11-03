@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7F2EA"/>
+      <stop offset="1" stop-color="#EAE1D3"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="300" fill="url(#fond)"/>
+  <circle cx="392" cy="66" r="34" fill="#E8A33D" opacity=".85"/>
+  <path d="M0 252 H480 V300 H0 Z" fill="#0F4C55"/>
+  <!-- façade -->
+  <rect x="104" y="112" width="272" height="140" fill="#FFFDF8" stroke="#0F4C55" stroke-width="2"/>
+  <!-- auvent -->
+  <path d="M92 112 L112 70 H368 L388 112 Z" fill="#0F4C55"/>
+  <path d="M132 70 L124 112 M164 70 L160 112 M196 70 L196 112 M228 70 L232 112 M260 70 L268 112 M292 70 L304 112 M324 70 L340 112 M356 70 L376 112" stroke="#F7F2EA" stroke-width="2" opacity=".85"/>
+  <path d="M92 112 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q15 18 30 0 q8 12 16 0" fill="#D96A47"/>
+  <!-- vitrine -->
+  <rect x="124" y="140" width="130" height="86" fill="#DCEBEC" stroke="#0F4C55" stroke-width="2"/>
+  <path d="M124 226 L254 140" stroke="#fff" stroke-width="3" opacity=".65"/>
+  <rect x="140" y="196" width="32" height="30" fill="#E8A33D"/>
+  <rect x="180" y="180" width="26" height="46" fill="#D96A47"/>
+  <rect x="214" y="204" width="28" height="22" fill="#3C7A80"/>
+  <!-- porte -->
+  <rect x="280" y="146" width="70" height="106" fill="#0F4C55"/>
+  <rect x="290" y="158" width="50" height="54" fill="#DCEBEC" opacity=".9"/>
+  <circle cx="336" cy="226" r="3.5" fill="#E8A33D"/>
+  <!-- enseigne -->
+  <rect x="352" y="118" width="14" height="22" fill="#E8A33D" opacity="0"/>
+  <!-- plante -->
+  <path d="M60 252 V214" stroke="#3C7A80" stroke-width="3"/>
+  <ellipse cx="60" cy="204" rx="18" ry="22" fill="#4A7C59"/>
+  <rect x="48" y="240" width="24" height="12" rx="2" fill="#D96A47"/>
+  <!-- lignes cuivrées -->
+  <path d="M0 40 H220 L260 0" fill="none" stroke="#D96A47" stroke-opacity=".55" stroke-width="1.2"/>
+  <path d="M440 300 V210 L480 170" fill="none" stroke="#D96A47" stroke-opacity=".55" stroke-width="1.2"/>
+</svg>
