@@ -18,6 +18,8 @@
   --motif-hachures: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M0 20L20 0M-5 5L5 -5M15 25L25 15' stroke='%23F7F2EA' stroke-opacity='.3' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
   --motif-diagonales: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-10 10L10 -10M30 50L50 30' stroke='%23E8A33D' stroke-opacity='.4' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
   --motif-points-sombre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='4' cy='4' r='1.8' fill='%230F4C55' fill-opacity='.2'/%3E%3C/svg%3E");
+  --motif-colonnes-sombre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='1.6' height='28' fill='%230F4C55' fill-opacity='.16'/%3E%3C/svg%3E");
+  --motif-grille-sombre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cpath d='M0 .8H28M.8 0V28' stroke='%230F4C55' stroke-opacity='.14' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
   --motif-hachures-sombre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M0 20L20 0M-5 5L5 -5M15 25L25 15' stroke='%230F4C55' stroke-opacity='.14' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
 }
 
@@ -481,5 +483,45 @@
   }
   .iat-logo:hover .iat-logo__point {
     animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   8) Écrans tactiles (pas de survol) : chaque tuile garde en permanence
+   sa propre couleur et son motif, pour qu'elles se distinguent. Une tuile
+   sur trois est pétrole (état « actif » posé par survol.js), les deux
+   autres sont sauge et ambre clair. Les motifs sont fixes (pas d'animation).
+   --------------------------------------------------------------------- */
+@media (hover: none) {
+  .iat-tuile.iat-actif::before {
+    animation: none;
+  }
+  .grid-cards-3 > .iat-tuile:nth-child(2) {
+    background-color: var(--iat-sauge) !important;
+    --motif: var(--motif-colonnes-sombre);
+  }
+  .grid-cards-3 > .iat-tuile:nth-child(3) {
+    background-color: #f3ddb0 !important;
+    --motif: var(--motif-grille-sombre);
+  }
+  .iat-exemples-grille > .iat-exemple:nth-child(1) {
+    background-color: var(--iat-sauge);
+    --motif: var(--motif-hachures-sombre);
+  }
+  .iat-exemples-grille > .iat-exemple:nth-child(2) {
+    background-color: #f3ddb0;
+    --motif: var(--motif-hachures-sombre);
+  }
+  .grid-cards-3 > .iat-tuile:is(:nth-child(2), :nth-child(3))::before,
+  .iat-exemples-grille > .iat-exemple:is(:nth-child(1), :nth-child(2))::before {
+    opacity: 1;
+  }
+  /* textes secondaires plus foncés sur les fonds colorés (contraste) */
+  .grid-cards-3 > .iat-tuile:is(:nth-child(2), :nth-child(3)) .iat-cible__qui,
+  .iat-exemples-grille > .iat-exemple:is(:nth-child(1), :nth-child(2)) :is(.iat-cible__qui, .iat-exemple__avant) {
+    color: var(--iat-texte);
+  }
+  .grid-cards-3 > .iat-tuile:is(:nth-child(2), :nth-child(3)) .iat-cible__img {
+    border-bottom-color: rgba(15, 76, 85, 0.25);
   }
 }
