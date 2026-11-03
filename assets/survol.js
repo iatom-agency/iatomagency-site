@@ -71,6 +71,7 @@
       if (!raf) raf = window.requestAnimationFrame(appliquer);
     });
     el.addEventListener("pointerleave", function () {
+      if (el.hasAttribute("data-fixe")) return;
       el.classList.remove("iat-actif");
       if (t.incline) {
         el.style.setProperty("--rx", "0deg");
@@ -81,10 +82,23 @@
     // Clavier : même rendu quand un lien ou un bouton de la tuile a le focus.
     el.addEventListener("focusin", function () { el.classList.add("iat-actif"); });
     el.addEventListener("focusout", function (e) {
-      if (!el.contains(e.relatedTarget)) el.classList.remove("iat-actif");
+      if (!el.contains(e.relatedTarget) && !el.hasAttribute("data-fixe")) el.classList.remove("iat-actif");
     });
   }
   tuiles.forEach(lier);
+
+  // Écrans tactiles : une tuile sur trois reste en permanence à l'état
+  // « actif » (fond pétrole + motif) pour différencier les cartes, puisqu'il
+  // n'y a pas de survol (les deux autres sont colorées en CSS, cf. survol.css 8).
+  if (!fine) {
+    [".grid-cards-3 > .iat-tuile:nth-child(1)", ".iat-exemples-grille > .iat-exemple:nth-child(3)"].forEach(function (sel) {
+      var el = document.querySelector(sel);
+      if (el) {
+        el.setAttribute("data-fixe", "");
+        el.classList.add("iat-actif");
+      }
+    });
+  }
 
   // -----------------------------------------------------------------
   // 2) Accueil : parallaxe du visuel, trame et lueur sous le curseur,
