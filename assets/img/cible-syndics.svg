@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7F2EA"/>
+      <stop offset="1" stop-color="#F0D9B5"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="300" fill="url(#fond)"/>
+  <circle cx="404" cy="60" r="30" fill="#E8A33D" opacity=".85"/>
+  <path d="M0 262 H480 V300 H0 Z" fill="#0F4C55"/>
+  <!-- immeuble principal -->
+  <rect x="150" y="40" width="180" height="222" fill="#FFFDF8" stroke="#0F4C55" stroke-width="2"/>
+  <rect x="150" y="40" width="180" height="16" fill="#0F4C55"/>
+  <!-- fenêtres : 5 étages x 4 colonnes -->
+  <g stroke="#0F4C55" stroke-width="1.6">
+    <g fill="#DCEBEC">
+      <rect x="168" y="70" width="26" height="30"/><rect x="204" y="70" width="26" height="30"/><rect x="250" y="70" width="26" height="30"/><rect x="286" y="70" width="26" height="30"/>
+      <rect x="168" y="112" width="26" height="30"/><rect x="250" y="112" width="26" height="30"/><rect x="286" y="112" width="26" height="30"/>
+      <rect x="204" y="154" width="26" height="30"/><rect x="250" y="154" width="26" height="30"/><rect x="286" y="154" width="26" height="30"/>
+      <rect x="168" y="196" width="26" height="30"/><rect x="204" y="196" width="26" height="30"/>
+    </g>
+    <g fill="#E8A33D">
+      <rect x="204" y="112" width="26" height="30"/><rect x="168" y="154" width="26" height="30"/><rect x="286" y="196" width="26" height="30"/>
+    </g>
+  </g>
+  <!-- balcon corail -->
+  <rect x="244" y="188" width="44" height="3" fill="#D96A47"/>
+  <!-- porte -->
+  <rect x="226" y="214" width="28" height="48" fill="#0F4C55"/>
+  <circle cx="248" cy="240" r="2.5" fill="#E8A33D"/>
+  <!-- immeuble voisin -->
+  <rect x="88" y="120" width="62" height="142" fill="#EAE1D3" stroke="#0F4C55" stroke-width="2"/>
+  <rect x="330" y="96" width="70" height="166" fill="#EAE1D3" stroke="#0F4C55" stroke-width="2"/>
+  <g fill="#DCEBEC" stroke="#0F4C55" stroke-width="1.4">
+    <rect x="100" y="138" width="16" height="20"/><rect x="124" y="138" width="16" height="20"/>
+    <rect x="100" y="176" width="16" height="20"/><rect x="124" y="176" width="16" height="20"/>
+    <rect x="344" y="114" width="16" height="20"/><rect x="370" y="114" width="16" height="20"/>
+    <rect x="344" y="152" width="16" height="20"/><rect x="370" y="152" width="16" height="20"/>
+    <rect x="344" y="190" width="16" height="20"/><rect x="370" y="190" width="16" height="20"/>
+  </g>
+  <!-- arbre -->
+  <path d="M60 262 V222" stroke="#3C7A80" stroke-width="3"/>
+  <circle cx="60" cy="208" r="22" fill="#4A7C59"/>
+  <circle cx="74" cy="220" r="14" fill="#4A7C59" opacity=".85"/>
+  <!-- lignes cuivrées -->
+  <path d="M0 80 H70 L110 40" fill="none" stroke="#D96A47" stroke-opacity=".55" stroke-width="1.2"/>
+  <path d="M480 250 H430 L400 280" fill="none" stroke="#D96A47" stroke-opacity=".55" stroke-width="1.2"/>
+</svg>

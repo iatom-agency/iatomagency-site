@@ -1,0 +1,469 @@
+/* refonte.css — visuels, exemples concrets, avant/après et animations
+   (novembre 2026, vague "refonte accueil"). Fichier additif et autonome,
+   dans l'esprit d'effects.css : pour tout annuler, retirer ce fichier,
+   refonte.js, les balises <link>/<script> correspondantes et les blocs
+   HTML marqués "refonte". Les couleurs viennent des variables de
+   styles.css (aucune valeur de marque en dur, sauf le gris des barres
+   "sans IA", volontairement neutre).
+
+   Règle de contraste : le corail n'est jamais utilisé pour du petit
+   texte (≈ 3:1 sur fond crème) — uniquement pour des tracés, des barres
+   et le texte des gros boutons (déjà géré par styles.css). */
+
+/* ---------------------------------------------------------------------
+   1) Accueil : en-tête en deux colonnes (texte + grand visuel).
+   Les paddings horizontaux de 80px sont posés en ligne dans le HTML pour
+   hériter des réductions mobiles déjà gérées par site.css.
+   --------------------------------------------------------------------- */
+.iat-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 56px;
+  align-items: center;
+}
+.iat-hero__texte {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.iat-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  padding-top: 8px;
+}
+.iat-pour-qui {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.iat-pour-qui a {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid var(--iat-bordure-forte);
+  border-radius: 999px;
+  font-family: var(--iat-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--iat-petrole);
+  text-decoration: none;
+  transition:
+    background-color var(--iat-duree, 240ms) var(--iat-ease, ease),
+    color var(--iat-duree, 240ms) var(--iat-ease, ease),
+    transform var(--iat-duree, 240ms) var(--iat-ease, ease);
+}
+.iat-pour-qui a:hover {
+  background: var(--iat-petrole);
+  color: var(--iat-blanc-chaud);
+  transform: translateY(-2px);
+}
+.iat-pour-qui a:focus-visible,
+.iat-hero__actions a:focus-visible {
+  outline: 2px solid var(--iat-petrole);
+  outline-offset: 3px;
+}
+
+.iat-hero__visuel {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 6px 6px 6px 96px;
+  overflow: hidden;
+  box-shadow: var(--iat-ombre);
+  background: var(--iat-sable);
+}
+.iat-hero__visuel img {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  max-width: none;
+  object-fit: cover;
+  animation: iat-derive 26s ease-in-out infinite alternate;
+}
+.iat-hero__lignes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.iat-hero__lignes path {
+  fill: none;
+  stroke: var(--iat-corail);
+  stroke-opacity: 0.7;
+  stroke-width: 1.3;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: iat-trace 2200ms var(--iat-ease, ease) forwards;
+  animation-delay: calc(500ms + var(--l, 0) * 260ms);
+}
+@keyframes iat-trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes iat-derive {
+  from {
+    transform: translate3d(-1.5%, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(1.5%, -1.5%, 0) scale(1.05);
+  }
+}
+
+@media (max-width: 900px) {
+  .iat-hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .iat-hero__visuel {
+    aspect-ratio: 16 / 10;
+    border-radius: 6px 6px 6px 56px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   2) Titre de l'accueil mot par mot + soulignement tracé à la main sous
+   « part humaine ». Le découpage est fait par refonte.js (le HTML reste
+   un simple <h1>, lisible sans JavaScript) ; .iat-titre-anime remplace
+   l'apparition globale d'effects.css (règle 14).
+   --------------------------------------------------------------------- */
+.iat-heading--display.iat-titre-anime {
+  animation: none;
+}
+.iat-mot {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.45em);
+  filter: blur(6px);
+  animation: iat-mot-entree 760ms var(--iat-ease, ease) forwards;
+  animation-delay: calc(180ms + var(--i, 0) * 110ms);
+}
+@keyframes iat-mot-entree {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+/* « humaine » en écriture manuscrite (Caveat, déjà chargée par fonts.css pour
+   la signature). Plus petite à corps égal, d'où le 1.3em. */
+.iat-calli {
+  font-family: var(--iat-font-signature);
+  font-weight: 600;
+  font-size: 1.3em;
+  line-height: 0.8;
+  letter-spacing: 0;
+  color: var(--iat-petrole);
+}
+.iat-souligne {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.iat-souligne__trait {
+  position: absolute;
+  left: 0;
+  bottom: -0.12em;
+  width: 100%;
+  height: 0.22em;
+  overflow: visible;
+  pointer-events: none;
+}
+.iat-souligne__trait path {
+  fill: none;
+  stroke: var(--iat-corail);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: iat-trace 900ms var(--iat-ease, ease) forwards;
+  animation-delay: var(--t, 1100ms);
+}
+
+/* ---------------------------------------------------------------------
+   3) Cartes « Ce que ça change » : illustration par cible en tête de
+   carte (les cartes gardent leur remplissage de 40px, l'image le
+   compense par des marges négatives).
+   --------------------------------------------------------------------- */
+.iat-cible__img {
+  display: block;
+  width: calc(100% + 80px);
+  max-width: none;
+  height: 190px;
+  margin: -40px -40px 0;
+  object-fit: cover;
+  border-bottom: 1px solid var(--iat-bordure);
+}
+.iat-cible__qui {
+  margin: 0;
+  font-family: var(--iat-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--iat-gris-texte);
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------
+   4) Exemples concrets (sans témoignage) : 3 cartes + chiffre animé.
+   --------------------------------------------------------------------- */
+.iat-exemples-grille {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.iat-exemple {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px;
+  background: var(--iat-surface);
+  border-radius: var(--iat-radius-m);
+}
+.iat-exemple__avant {
+  margin: 0;
+  color: var(--iat-gris-texte);
+  text-decoration: line-through;
+  text-decoration-color: var(--iat-corail);
+  text-decoration-thickness: 1.5px;
+}
+.iat-exemple__apres {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 0;
+  color: var(--iat-petrole);
+}
+.iat-exemple__chiffre {
+  font-family: var(--iat-font-titre);
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.iat-exemple__unite {
+  font-family: var(--iat-font-titre);
+  font-size: 22px;
+  font-weight: 600;
+}
+.iat-exemple__detail {
+  flex-basis: 100%;
+  font-size: 15px;
+}
+.iat-exemple__garde {
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--iat-bordure);
+  font-size: 15px;
+  color: var(--iat-texte);
+}
+.iat-note {
+  margin: 0;
+  font-family: var(--iat-font-mono);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--iat-gris-texte);
+}
+@media (max-width: 900px) {
+  .iat-exemples-grille {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   5) Avant / après : une journée de gestionnaire, deux répartitions du
+   temps. Chaque barre passe de sa longueur « avant » à sa longueur « après »
+   selon --t (0 à 1), piloté par le curseur ou le glisser.
+   --------------------------------------------------------------------- */
+.iat-avap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+  background: var(--iat-blanc-chaud);
+  border: 1px solid var(--iat-bordure);
+  border-radius: var(--iat-radius-m);
+}
+.iat-avap__legende {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--iat-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.iat-avap__legende span {
+  color: var(--iat-gris-texte);
+}
+.iat-avap__leg-apres {
+  text-align: right;
+}
+.iat-avap__zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  touch-action: pan-y;
+  cursor: ew-resize;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.iat-avap__label {
+  margin: 0 0 6px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--iat-texte);
+}
+.iat-avap__piste {
+  position: relative;
+  height: 26px;
+  background: var(--iat-sable);
+  border-radius: 4px;
+}
+.iat-avap__barre {
+  --t: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(var(--wa) + (var(--wp) - var(--wa)) * var(--t));
+  border-radius: 4px;
+  background: #9aa595;
+  transition: background-color 400ms var(--iat-ease, ease);
+}
+.iat-avap--apres .iat-avap__barre {
+  background: var(--iat-petrole-clair);
+}
+.iat-avap--apres .iat-avap__barre--relation {
+  background: var(--iat-corail);
+}
+.iat-avap__barre b {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+  font-family: var(--iat-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--iat-texte);
+}
+.iat-avap__t-apres,
+.iat-avap--apres .iat-avap__t-avant {
+  display: none;
+}
+.iat-avap--apres .iat-avap__t-apres {
+  display: inline;
+}
+.iat-avap__leg-avant,
+.iat-avap__leg-apres {
+  transition: color 300ms var(--iat-ease, ease);
+}
+.iat-avap:not(.iat-avap--apres) .iat-avap__leg-avant,
+.iat-avap--apres .iat-avap__leg-apres {
+  color: var(--iat-petrole);
+  font-weight: 600;
+}
+.iat-avap__curseur {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--iat-petrole);
+  cursor: pointer;
+}
+.iat-avap__curseur:focus-visible {
+  outline: 2px solid var(--iat-petrole);
+  outline-offset: 4px;
+}
+.iat-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 700px) {
+  .iat-avap {
+    padding: 28px 20px;
+  }
+  .iat-avap__legende {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   6) Méthode : chaque étape « s'allume » quand on l'atteint. L'état
+   atténué n'existe que si le JavaScript tourne (classe .iat-js posée par
+   refonte.js) : sans JS, les trois étapes restent pleinement visibles.
+   --------------------------------------------------------------------- */
+.iat-js .grid-methode-step > div:last-child,
+.iat-js .grid-methode-step .iat-methode-num {
+  transition:
+    opacity 700ms var(--iat-ease, ease),
+    transform 700ms var(--iat-ease, ease),
+    color 700ms var(--iat-ease, ease);
+}
+.iat-js .grid-methode-step:not(.iat-etape--active) > div:last-child {
+  opacity: 0.3;
+  transform: translateX(-14px);
+}
+.iat-js .grid-methode-step:not(.iat-etape--active) .iat-methode-num {
+  color: var(--iat-sauge) !important;
+  transform: scale(0.9);
+  transform-origin: left center;
+}
+.iat-js .grid-methode-step.iat-etape--active .iat-methode-num {
+  transform: scale(1);
+  transform-origin: left center;
+}
+
+/* ---------------------------------------------------------------------
+   7) Accessibilité : mouvement réduit. Tout reste affiché dans son état
+   final, sans animation (le JS le gère aussi pour le découpage du titre,
+   les compteurs et l'allumage des étapes).
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .iat-hero__visuel img {
+    animation: none;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .iat-hero__lignes path,
+  .iat-souligne__trait path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .iat-mot {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .iat-pour-qui a:hover {
+    transform: none;
+  }
+  .iat-js .grid-methode-step > div:last-child,
+  .iat-js .grid-methode-step .iat-methode-num {
+    transition: none;
+  }
+  .iat-js .grid-methode-step:not(.iat-etape--active) > div:last-child {
+    opacity: 1;
+    transform: none;
+  }
+  .iat-js .grid-methode-step:not(.iat-etape--active) .iat-methode-num {
+    color: var(--iat-corail) !important;
+    transform: none;
+  }
+}
