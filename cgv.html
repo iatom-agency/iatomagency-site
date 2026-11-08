@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+  <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon-32x32.png" type="image/png" sizes="32x32">
@@ -32,7 +33,7 @@ d.classList.add('ch');
 var p=location.pathname,ext=true;
 try{ext=!document.referrer||new URL(document.referrer).origin!==location.origin;}catch(e){}
 var robot=/bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit/i.test(navigator.userAgent);
-if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot){d.classList.add('ouverture');}
+if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot&&!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)){d.classList.add('ouverture');}
 window.__chTimer=window.setTimeout(function(){if(!window.__ch){d.classList.remove('ch','ouverture');}},4000);
 }catch(e){}})();
 </script>
