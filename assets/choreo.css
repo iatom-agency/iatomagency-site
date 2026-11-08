@@ -1,0 +1,399 @@
+/* choreo.css — « chorégraphie » reprise de la page d'Adeline (novembre 2026) :
+   accueil en particules 3D, titres mot par mot, mots manuscrits qui
+   s'écrivent, paragraphes qui montent en flou, cartes en cascade, photos
+   qui se dévoilent, en-tête qui s'efface, bouton flottant, pied de page
+   qui se dévoile. Adaptée à la charte IATom (pétrole, corail, Caveat).
+   Fichier additif, avec choreo.js et particules.js : pour tout annuler,
+   retirer ces trois fichiers, le petit script en tête de chaque page et
+   les balises correspondantes.
+
+   Principe de sécurité (comme chez Adeline) : la classe « ch » n'est posée
+   (en tête de page) que si l'appareil n'a PAS demandé de réduire les
+   animations. Si choreo.js ne démarre pas dans les 4 s, la classe est
+   retirée et tout s'affiche. Sans JavaScript, rien n'est masqué. */
+
+/* Le contenu reste masqué quelques instants le temps que le script prépare
+   les éléments (évite d'afficher puis de masquer). */
+.ch:not(.ch-pret) main {
+  opacity: 0;
+}
+
+/* L'ancienne apparition d'effects.css est remplacée par celle-ci */
+.ch .iat-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* ---------------------------------------------------------------------
+   1) Titres mot par mot (chaque mot monte de son masque) + mots manuscrits.
+   --------------------------------------------------------------------- */
+.mot {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.mot > span {
+  display: inline-block;
+}
+.ch [data-ch="mots"]:not(.mots-prets) {
+  opacity: 0;
+}
+.ch .mots-prets:not(.ch-fait) .mot > span {
+  transform: translateY(110%);
+}
+
+/* Mots en écriture manuscrite (balise <em> des titres) */
+main h1 em,
+main h2 em {
+  font-family: var(--iat-font-signature);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.28em;
+  line-height: 0.8;
+  letter-spacing: 0;
+  color: var(--iat-petrole);
+}
+.iat-bandeau h2 em {
+  color: var(--iat-ambre);
+}
+.ch em.ecrit {
+  --r: -18%;
+  -webkit-mask-image: linear-gradient(90deg, #000 var(--r), transparent calc(var(--r) + 16%));
+  mask-image: linear-gradient(90deg, #000 var(--r), transparent calc(var(--r) + 16%));
+}
+
+/* ---------------------------------------------------------------------
+   2) Paragraphes, blocs, enfants de groupes (cartes, FAQ, étapes…).
+   L'état de départ ne vaut que pour les éléments marqués par choreo.js ;
+   la classe « ch-fait » (posée à la fin de l'animation) le lève.
+   --------------------------------------------------------------------- */
+.ch [data-ch="p"]:not(.ch-fait),
+.ch [data-ch="bloc"]:not(.ch-fait),
+.ch [data-ch="enfant"]:not(.ch-fait) {
+  opacity: 0;
+}
+.ch [data-ch="photo"]:not(.ch-fait) {
+  clip-path: inset(0 100% 0 0);
+}
+
+/* Appui : léger enfoncement des boutons */
+.iat-button:active:not(:disabled) {
+  scale: 0.97;
+  transition: scale 0.12s ease-out;
+}
+
+/* ---------------------------------------------------------------------
+   3) En-tête : fixe à toute largeur, il s'efface quand on descend et
+   revient dès que l'on remonte (comme le bandeau d'Adeline).
+   --------------------------------------------------------------------- */
+.ch .site-header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  right: auto;
+  width: min(100%, 1180px);
+  translate: -50% 0;
+  z-index: 150;
+  background: var(--iat-fond);
+  transition: transform 0.45s var(--iat-ease, ease), box-shadow 0.3s ease, opacity 0.9s var(--iat-ease, ease);
+}
+.ch .site-header--hidden {
+  transform: translateY(-100%);
+}
+.ch .site-header--scrolled {
+  box-shadow: var(--iat-ombre);
+}
+.ch main {
+  padding-top: var(--iat-header-h, 0px);
+}
+/* Le sous-menu de l'Offre se cale sous l'en-tête, ou en haut quand il est caché */
+.ch .iat-offre-subnav--pinned {
+  top: var(--iat-header-h, 0px);
+  transition: top 0.45s var(--iat-ease, ease);
+}
+.ch.ch-entete-cache .iat-offre-subnav--pinned {
+  top: 0;
+}
+
+/* ---------------------------------------------------------------------
+   4) Bouton flottant « Discutons de votre quotidien » : il apparaît quand
+   l'en-tête s'efface (après l'accueil), en haut à droite.
+   --------------------------------------------------------------------- */
+.iat-flottant {
+  position: fixed;
+  top: 14px;
+  right: max(20px, calc((100vw - 1180px) / 2 + 24px));
+  z-index: 160;
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 -14px;
+  text-decoration: none;
+  transition: opacity 0.35s ease, translate 0.35s ease, top 0.45s var(--iat-ease, ease), visibility 0s linear 0.35s;
+}
+.ch-flottant .iat-flottant {
+  opacity: 1;
+  visibility: visible;
+  translate: var(--tx, 0px) var(--ty, 0px);
+  transition: opacity 0.35s ease, translate 0.35s ease, top 0.45s var(--iat-ease, ease), visibility 0s;
+  /* sous l'en-tête quand il est visible, tout en haut quand il s'est effacé */
+  top: calc(var(--iat-header-h, 0px) + 12px);
+}
+.ch-flottant.ch-entete-cache .iat-flottant {
+  top: 14px;
+}
+/* le bandeau final propose déjà le même bouton : on masque le flottant pendant qu'il est à l'écran */
+.ch-bandeau-vu .iat-flottant {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+@media (max-width: 560px) {
+  .iat-flottant {
+    right: 14px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   5) Pied de page qui se dévoile (grand écran) : il reste fixé en bas,
+   caché derrière la page ; en fin de défilement la page glisse et le
+   révèle, puis ses colonnes apparaissent en fondu flou.
+   --------------------------------------------------------------------- */
+.pied-actif main {
+  position: relative;
+  z-index: 1;
+  background: var(--iat-fond);
+}
+.pied-cale {
+  pointer-events: none;
+}
+.ch-pied.pied-revele {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  width: min(calc(100% - 2px), 1178px);   /* à l'intérieur des liserés de la page */
+  translate: -50% 0;
+  z-index: 0;
+}
+.ch-pied:not(.pied-vu) > * {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------------
+   6) Accueil immersif : le visuel apparaît en fondu, la phrase se compose
+   en particules 3D à la place du titre, puis le reste arrive.
+   Le vrai <h1> reste dans la page (référencement, lecteurs d'écran) ; il
+   n'est visible que si l'animation ne se joue pas.
+   --------------------------------------------------------------------- */
+.iat-hero .scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.titre-sculpte {
+  position: relative;
+  display: none;
+  max-width: 100%;
+}
+.iat-hero.scene-active .titre-sculpte,
+html.ouverture .iat-hero .titre-sculpte {
+  display: block;
+}
+html.ouverture .iat-hero h1,
+.iat-hero.scene-active h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.iat-hero__texte > :not(h1):not(.titre-sculpte) {
+  transition: opacity 0.9s var(--iat-ease, ease), transform 0.9s var(--iat-ease, ease);
+}
+.iat-hero__texte > :nth-child(4) { transition-delay: 0.45s; }
+.iat-hero__texte > :nth-child(5) { transition-delay: 0.6s; }
+.iat-hero__texte > :nth-child(6) { transition-delay: 0.75s; }
+.iat-hero__texte > :nth-child(7) { transition-delay: 0.9s; }
+html.ouverture .iat-hero__texte > :not(h1):not(.titre-sculpte) {
+  opacity: 0;
+  transform: translateY(22px);
+}
+html.ouverture .site-header {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-14px);
+}
+.iat-hero__visuel {
+  transition: transform 700ms var(--iat-ease, ease), opacity 1.8s var(--iat-ease, ease), filter 1.8s var(--iat-ease, ease);
+}
+html.ouverture .iat-hero:not(.devoile) .iat-hero__visuel {
+  opacity: 0;
+  filter: blur(10px);
+}
+.iat-passer-in {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  translate: -50% 0;
+  z-index: 5;
+}
+.iat-passer {
+  all: unset;
+  cursor: pointer;
+  font-family: var(--iat-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--iat-gris-texte);
+  opacity: 0;
+  transition: opacity 0.6s;
+  pointer-events: none;
+}
+html.ouverture .iat-passer {
+  opacity: 0.8;
+  pointer-events: auto;
+}
+.iat-passer:hover,
+.iat-passer:focus-visible {
+  opacity: 1;
+}
+.iat-passer:focus-visible {
+  outline: 2px solid var(--iat-petrole);
+  outline-offset: 4px;
+}
+
+/* ---------------------------------------------------------------------
+   6 bis) Bouton « Discutons de votre quotidien » (accueil, bandeaux, bouton
+   flottant) : un reflet lumineux le traverse à intervalle régulier et un
+   halo corail pulse doucement pour attirer l'œil.
+   --------------------------------------------------------------------- */
+.ch a.iat-button--primary[href="contact.html"]:not(.iat-flottant) {
+  position: relative;
+}
+.ch a.iat-button--primary[href="contact.html"] {
+  overflow: hidden;
+  isolation: isolate;
+  animation: iat-halo 3.2s ease-in-out 2.2s infinite;
+}
+.ch a.iat-button--primary[href="contact.html"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  animation: iat-reflet 3.2s ease-in-out 2.2s infinite;
+}
+.ch a.iat-button--primary[href="contact.html"]:hover,
+.ch a.iat-button--primary[href="contact.html"]:focus-visible {
+  animation-play-state: paused;
+}
+@keyframes iat-reflet {
+  0%, 55% { left: -60%; }
+  100% { left: 130%; }
+}
+@keyframes iat-halo {
+  0%, 60%, 100% { box-shadow: 0 0 0 0 rgba(217, 106, 71, 0); }
+  75% { box-shadow: 0 0 0 10px rgba(217, 106, 71, 0.22); }
+}
+
+/* ---------------------------------------------------------------------
+   7) Mouvement réduit : la classe « ch » n'est jamais posée ; on couvre
+   aussi le cas où le réglage change en cours de visite.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ch a.iat-button--primary[href="contact.html"],
+  .ch a.iat-button--primary[href="contact.html"]::after {
+    animation: none;
+  }
+  .ch:not(.ch-pret) main {
+    opacity: 1;
+  }
+  .ch [data-ch] {
+    opacity: 1 !important;
+    clip-path: none !important;
+  }
+  .ch .mots-prets .mot > span {
+    transform: none !important;
+  }
+  .ch em.ecrit {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .iat-hero__texte > *,
+  html.ouverture .site-header {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Pied de page : QR code de la carte de contact (cliquable)
+   --------------------------------------------------------------------- */
+.footer-qr {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  max-width: 20rem;
+  background: #fff;
+  border: 1px solid var(--iat-bordure);
+  border-radius: 10px;
+  color: var(--iat-texte);
+  text-decoration: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, translate 0.3s var(--iat-ease, ease);
+}
+.footer-qr:hover,
+.footer-qr:focus-visible {
+  border-color: var(--iat-corail);
+  box-shadow: var(--iat-ombre);
+  translate: 0 -2px;
+}
+.footer-qr:focus-visible {
+  outline: 2px solid var(--iat-petrole);
+  outline-offset: 3px;
+}
+.footer-qr img {
+  flex: none;
+  width: 84px;
+  height: 84px;
+  padding: 4px;
+  background: #fff;
+  image-rendering: pixelated;
+}
+.footer-qr-texte {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--iat-gris-texte);
+}
+.footer-qr-texte strong {
+  font-size: 14px;
+  color: var(--iat-petrole);
+}
+/* le QR n'est pas un simple lien de colonne : on neutralise le trait corail / glissement des liens du pied */
+.site-footer-cols a.footer-qr {
+  display: flex;
+  background-image: none;
+}
+.site-footer-cols a.footer-qr:hover,
+.site-footer-cols a.footer-qr:focus-visible {
+  translate: 0 -2px;
+}

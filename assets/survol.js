@@ -24,6 +24,7 @@
     { sel: ".grid-cards-3 > div", classes: ["iat-tuile--sombre"], motifs: ["points", "colonnes", "grille"], incline: true },
     { sel: ".iat-exemple", classes: ["iat-tuile--sombre"], motifs: ["hachures"], incline: true },
     { sel: ".iat-card--sable", classes: ["iat-tuile--douce"], motifs: ["points-sombre"] },
+    { sel: '.grid-contact-layout div[style*="background: var(--iat-sable)"]', classes: ["iat-tuile--douce", "iat-coordonnees"], motifs: ["points-sombre"] },
     { sel: ".iat-avap", classes: ["iat-tuile--douce"], motifs: ["hachures-sombre"] },
     { sel: 'main > div[style*="background: var(--iat-petrole)"]', classes: ["iat-tuile--bandeau", "iat-bandeau"], motifs: ["diagonales"] }
   ];
@@ -194,5 +195,39 @@
         el.style.setProperty("--ty", "0px");
       });
     });
+  }
+
+  // -----------------------------------------------------------------
+  // 5) Pages intérieures : étiquetage des blocs (pour ne pas alourdir le
+  //    HTML) et signature de l'« À propos » qui se trace à l'arrivée.
+  // -----------------------------------------------------------------
+  var motifsOffre = ["points-sombre", "colonnes-sombre", "grille-sombre"];
+  Array.prototype.forEach.call(document.querySelectorAll(".grid-offre-section"), function (bloc, i) {
+    bloc.classList.add("iat-offre-bloc");
+    bloc.setAttribute("data-teinte", i % 3);
+    bloc.style.setProperty("--motif", "var(--motif-" + motifsOffre[i % 3] + ")");
+    bloc.style.setProperty("--taille", i % 3 === 0 ? "24px" : "28px");
+    Array.prototype.forEach.call(bloc.querySelectorAll('div[style*="width: 6px"]'), function (puce) {
+      if (puce.parentNode) puce.parentNode.classList.add("iat-puce");
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".grid-photo-bio h2"), function (h2) {
+    if (h2.parentNode) h2.parentNode.classList.add("iat-lecture");
+  });
+
+  var trace = document.querySelector(".iat-signature__trace");
+  if (trace && !reduce && "IntersectionObserver" in window) {
+    trace.classList.add("iat-signature--trace");
+    var obsSignature = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (entree) {
+        if (entree.isIntersecting) {
+          trace.classList.add("iat-signature--on");
+          obsSignature.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+    // on observe le conteneur : le trait lui-même est rogné (clip-path) au départ
+    obsSignature.observe(trace.closest(".iat-signature") || trace.parentNode);
   }
 })();

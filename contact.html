@@ -23,11 +23,25 @@
 <meta name="twitter:title" content="Contact — IATom Agency">
 <meta name="twitter:description" content="Prenez rendez-vous pour un échange de 45 minutes, sans engagement, avec IATom Agency.">
 <meta name="twitter:image" content="https://iatomagency.fr/assets/img/og-image.png">
+<script>
+/* Chorégraphie (choreo.js) : la classe « ch » n'est posée que si l'appareil n'a pas demandé de réduire les animations ;
+   retirée automatiquement si choreo.js ne démarre pas. L'ouverture en particules : accueil seulement, arrivée depuis l'extérieur du site. */
+(function(){var d=document.documentElement;try{
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){return;}
+d.classList.add('ch');
+var p=location.pathname,ext=true;
+try{ext=!document.referrer||new URL(document.referrer).origin!==location.origin;}catch(e){}
+var robot=/bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit/i.test(navigator.userAgent);
+if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot){d.classList.add('ouverture');}
+window.__chTimer=window.setTimeout(function(){if(!window.__ch){d.classList.remove('ch','ouverture');}},4000);
+}catch(e){}})();
+</script>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/styles.css">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/effects.css">
 <link rel="stylesheet" href="assets/survol.css">
+<link rel="stylesheet" href="assets/choreo.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -70,7 +84,7 @@
 <main>
 
   <div style="padding: 80px 80px 64px; display: flex; flex-direction: column; gap: 20px;">
-    <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Parlons de votre quotidien</h1>
+    <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Parlons de votre <em>quotidien</em></h1>
     <p class="iat-text iat-text--chapo" style="margin: 0px; max-width: 720px;">Un échange de 45 minutes, sans engagement, pour comprendre votre quotidien avant toute proposition.</p>
   </div>
 
@@ -104,7 +118,7 @@
         <div style="display: flex; flex-direction: column; gap: 10px; font-family: var(--iat-font-texte); font-size: 15px; color: var(--iat-texte);">
           <div style="display: flex; align-items: center; gap: 10px;"><svg class="iat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path> <rect x="2" y="4" width="20" height="16" rx="2"></rect></svg><a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a></div>
           <div style="display: flex; align-items: center; gap: 10px;"><svg class="iat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M15 3h6v6"></path> <path d="M10 14 21 3"></path> <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a></div>
-          <div style="display: flex; align-items: center; gap: 10px;"><svg class="iat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">06 01 48 33 18</a></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><svg class="iat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">+33 (0)6 01 48 33 18</a></div>
         </div>
       </div>
     </div>
@@ -113,7 +127,7 @@
 
     <div style="padding: 0px 80px 88px; display: flex; flex-direction: column; gap: 24px;">
     <div style="display: flex; flex-direction: column; gap: 8px; max-width: 720px;">
-      <h2 class="iat-heading iat-heading--h2" style="margin: 0px;">Réserver un créneau directement</h2>
+      <h2 class="iat-heading iat-heading--h2" style="margin: 0px;">Réserver un créneau <em>directement</em></h2>
       <p class="iat-text iat-text--corps" style="margin: 0px;">Vous préférez choisir vous-même un horaire plutôt que d'attendre une réponse ? Prenez rendez-vous ci-dessous pour un échange de 45 minutes, aux disponibilités affichées en temps réel.</p>
     </div>
     <div class="iat-booking-frame">
@@ -134,7 +148,7 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">CONTACT</div>
-        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">06 01 48 33 18</a>
+        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">+33 (0)6 01 48 33 18</a><a class="footer-qr" href="https://s.vkard.io/p/30e7bf2a-7fc1-4e2c-b51f-27ae4fcb69c5/4a1ca84212?source=qr" target="_blank" rel="noopener"><img src="assets/img/qr-contact-thomas.svg" width="84" height="84" alt="QR code de la carte de contact de Thomas Blachère" loading="lazy"><span class="footer-qr-texte"><strong>Enregistrer mon contact</strong><span>Scannez ou cliquez pour ajouter Thomas à vos contacts.</span></span></a>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">LÉGAL</div>
@@ -155,5 +169,6 @@
 <script src="assets/consent.js" defer></script>
 <script src="assets/effects.js" defer></script>
 <script src="assets/survol.js" defer></script>
+<script src="assets/choreo.js" defer></script>
 </body>
 </html>
