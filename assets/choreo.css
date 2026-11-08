@@ -18,6 +18,13 @@
   opacity: 0;
 }
 
+/* Le site n'a qu'un thème clair : on le déclare pour que le navigateur n'applique
+   pas son « mode sombre forcé » (qui assombrissait le fond et rendait le titre,
+   dessiné en sombre, invisible). */
+:root {
+  color-scheme: light;
+}
+
 /* L'ancienne apparition d'effects.css est remplacée par celle-ci */
 .ch .iat-reveal {
   opacity: 1 !important;
@@ -236,10 +243,20 @@ html.ouverture .site-header {
 }
 .iat-hero__visuel {
   transition: transform 700ms var(--iat-ease, ease), opacity 1.8s var(--iat-ease, ease), filter 1.8s var(--iat-ease, ease);
+  transition-delay: 0s, 1s, 1s;
 }
-html.ouverture .iat-hero:not(.devoile) .iat-hero__visuel {
+/* L'image du hero arrive EN DERNIER : après le titre et le texte. */
+html.ouverture .iat-hero__visuel {
   opacity: 0;
   filter: blur(10px);
+}
+/* sans l'intro en particules : elle apparaît une fois le titre écrit */
+.titre-seq .iat-hero__visuel {
+  animation: iat-visuel-arrive 1.6s var(--iat-ease, ease) 2.6s backwards;
+}
+@keyframes iat-visuel-arrive {
+  from { opacity: 0; filter: blur(10px); }
+  to { opacity: 1; filter: blur(0); }
 }
 .iat-passer-in {
   position: absolute;

@@ -27,6 +27,7 @@
     var debutSouligne = mots.indexOf("part");
     titre.setAttribute("aria-label", texte);
     titre.classList.add("iat-titre-anime");
+    document.documentElement.classList.add("titre-seq");
     titre.textContent = "";
 
     var groupe = null;

@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+  <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon-32x32.png" type="image/png" sizes="32x32">
@@ -25,14 +26,14 @@
 <meta name="twitter:image" content="https://iatomagency.fr/assets/img/og-image.png">
 <script>
 /* Chorégraphie (choreo.js) : la classe « ch » n'est posée que si l'appareil n'a pas demandé de réduire les animations ;
-   retirée automatiquement si choreo.js ne démarre pas. L'ouverture en particules : accueil seulement, arrivée depuis l'extérieur du site. */
+   retirée automatiquement si choreo.js ne démarre pas. L'ouverture en particules : accueil seulement, arrivée depuis l'extérieur du site, hors mode sombre (le titre en particules est dessiné en sombre). */
 (function(){var d=document.documentElement;try{
 if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){return;}
 d.classList.add('ch');
 var p=location.pathname,ext=true;
 try{ext=!document.referrer||new URL(document.referrer).origin!==location.origin;}catch(e){}
 var robot=/bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit/i.test(navigator.userAgent);
-if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot){d.classList.add('ouverture');}
+if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot&&!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)){d.classList.add('ouverture');}
 window.__chTimer=window.setTimeout(function(){if(!window.__ch){d.classList.remove('ch','ouverture');}},4000);
 }catch(e){}})();
 </script>
