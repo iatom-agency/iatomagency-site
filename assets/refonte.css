@@ -150,6 +150,33 @@
     filter: blur(0);
   }
 }
+/* « Rendre au travail sa part » : chaque mot se rabat en volume, comme une
+   lamelle d'affichage qui bascule vers l'avant (rotation 3D, ancrée en bas).
+   Autre mouvement que l'écriture manuscrite de « humaine ». */
+.iat-heading--display.iat-titre-anime {
+  perspective: 900px;
+}
+.iat-mot.iat-mot--masque {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  animation: none;
+}
+.iat-mot__i {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  transform: rotateX(-88deg) translateY(0.12em);
+  opacity: 0;
+  animation: iat-mot-bascule 950ms var(--iat-ease, ease) forwards;
+  animation-delay: calc(150ms + var(--i, 0) * 110ms);
+}
+@keyframes iat-mot-bascule {
+  0% { opacity: 0; transform: rotateX(-88deg) translateY(0.12em); }
+  35% { opacity: 1; }
+  70% { transform: rotateX(8deg) translateY(0); }
+  100% { opacity: 1; transform: rotateX(0deg) translateY(0); }
+}
+
 /* « humaine » en écriture manuscrite (Caveat, déjà chargée par fonts.css pour
    la signature). Plus petite à corps égal, d'où le 1.3em. */
 .iat-calli {
@@ -159,6 +186,31 @@
   line-height: 0.8;
   letter-spacing: 0;
   color: var(--iat-petrole);
+}
+/* Sans l'intro en particules : « humaine. » s'écrit de gauche à droite,
+   comme à la main, puis le trait corail se trace. */
+.iat-mot.iat-calli {
+  filter: none;
+  transform: none;
+  opacity: 1;
+  padding: 0.08em 0.12em 0.12em 0.04em;
+  margin: -0.08em -0.12em -0.12em -0.04em;
+  -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+  mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+  -webkit-mask-size: 260% 100%;
+  mask-size: 260% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  animation: iat-ecrit 1500ms cubic-bezier(.45,.05,.4,1) forwards;
+  animation-delay: calc(180ms + var(--i, 0) * 110ms);
+}
+@keyframes iat-ecrit {
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
 }
 .iat-souligne {
   position: relative;
@@ -444,6 +496,16 @@
   .iat-souligne__trait path {
     animation: none;
     stroke-dashoffset: 0;
+  }
+  .iat-mot__i {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+  .iat-mot.iat-calli {
+    animation: none;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
   .iat-mot {
     animation: none;

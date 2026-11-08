@@ -23,12 +23,26 @@
 <meta name="twitter:title" content="Méthode — IATom Agency">
 <meta name="twitter:description" content="La méthode IATom Agency pour adopter l'IA sans jargon et sans se substituer à vous.">
 <meta name="twitter:image" content="https://iatomagency.fr/assets/img/og-image.png">
+<script>
+/* Chorégraphie (choreo.js) : la classe « ch » n'est posée que si l'appareil n'a pas demandé de réduire les animations ;
+   retirée automatiquement si choreo.js ne démarre pas. L'ouverture en particules : accueil seulement, arrivée depuis l'extérieur du site. */
+(function(){var d=document.documentElement;try{
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){return;}
+d.classList.add('ch');
+var p=location.pathname,ext=true;
+try{ext=!document.referrer||new URL(document.referrer).origin!==location.origin;}catch(e){}
+var robot=/bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit/i.test(navigator.userAgent);
+if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot){d.classList.add('ouverture');}
+window.__chTimer=window.setTimeout(function(){if(!window.__ch){d.classList.remove('ch','ouverture');}},4000);
+}catch(e){}})();
+</script>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/styles.css">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/effects.css">
 <link rel="stylesheet" href="assets/refonte.css">
 <link rel="stylesheet" href="assets/survol.css">
+<link rel="stylesheet" href="assets/choreo.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,13 +85,14 @@
 <main>
 
   <div style="padding: 80px 80px 64px; display: flex; flex-direction: column; gap: 20px;">
-    <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Comment je travaille</h1>
+    <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Comment je <em>travaille</em></h1>
     <p class="iat-text iat-text--chapo" style="margin: 0px; max-width: 720px;">Je ne pars jamais d'un outil. Je pars de ce qui vous prend du temps sans valeur ajoutée, et je construis à partir de là.</p>
   </div>
 
   <div class="iat-methode-etapes" style="padding: 0px 80px 72px; display: flex; flex-direction: column;">
     <div class="iat-methode-ligne" aria-hidden="true"><div class="iat-methode-ligne__remplissage"></div></div>
     <div class="grid-methode-step" style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); align-items: start;">
+      <img class="iat-etape__icone" src="assets/img/etape-observer.svg" alt="" width="160" height="120" loading="lazy">
       <div class="iat-methode-num" style="font-family: var(--iat-font-mono); font-size: 32px; color: var(--iat-corail); line-height: 1;">01</div>
       <div style="display: flex; flex-direction: column; gap: 10px; max-width: 720px;">
         <h3 class="iat-heading iat-heading--h3" style="margin: 0px;">Observer</h3>
@@ -85,6 +100,7 @@
       </div>
     </div>
     <div class="grid-methode-step" style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); align-items: start;">
+      <img class="iat-etape__icone" src="assets/img/etape-diagnostiquer.svg" alt="" width="160" height="120" loading="lazy">
       <div class="iat-methode-num" style="font-family: var(--iat-font-mono); font-size: 32px; color: var(--iat-corail); line-height: 1;">02</div>
       <div style="display: flex; flex-direction: column; gap: 10px; max-width: 720px;">
         <h3 class="iat-heading iat-heading--h3" style="margin: 0px;">Diagnostiquer</h3>
@@ -92,6 +108,7 @@
       </div>
     </div>
     <div class="grid-methode-step" style="display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 32px 0px; border-top: 1px solid var(--iat-bordure); border-bottom: 1px solid var(--iat-bordure); align-items: start;">
+      <img class="iat-etape__icone" src="assets/img/etape-accompagner.svg" alt="" width="160" height="120" loading="lazy">
       <div class="iat-methode-num" style="font-family: var(--iat-font-mono); font-size: 32px; color: var(--iat-corail); line-height: 1;">03</div>
       <div style="display: flex; flex-direction: column; gap: 10px; max-width: 720px;">
         <h3 class="iat-heading iat-heading--h3" style="margin: 0px;">Accompagner</h3>
@@ -108,7 +125,7 @@
 
   <!-- refonte : appel à l'action en bas de page -->
   <div style="background: var(--iat-petrole); padding: 72px 80px; display: flex; align-items: center; justify-content: space-between; gap: 48px;">
-    <h2 class="iat-heading iat-heading--h2" style="margin: 0px; color: var(--iat-blanc-chaud); max-width: 640px;">Ce qui vous prend du temps, on en parle ? 45 minutes, sans engagement.</h2>
+    <h2 class="iat-heading iat-heading--h2" style="margin: 0px; color: var(--iat-blanc-chaud); max-width: 640px;">Ce qui vous prend du temps, <em>on en parle ?</em> 45 minutes, sans engagement.</h2>
     <a class="iat-button iat-button--primary" href="contact.html" style="text-decoration:none;">Discutons de votre quotidien</a>
   </div>
 
@@ -123,7 +140,7 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">CONTACT</div>
-        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">06 01 48 33 18</a>
+        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">+33 (0)6 01 48 33 18</a><a class="footer-qr" href="https://s.vkard.io/p/30e7bf2a-7fc1-4e2c-b51f-27ae4fcb69c5/4a1ca84212?source=qr" target="_blank" rel="noopener"><img src="assets/img/qr-contact-thomas.svg" width="84" height="84" alt="QR code de la carte de contact de Thomas Blachère" loading="lazy"><span class="footer-qr-texte"><strong>Enregistrer mon contact</strong><span>Scannez ou cliquez pour ajouter Thomas à vos contacts.</span></span></a>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">LÉGAL</div>
@@ -145,5 +162,6 @@
 <script src="assets/effects.js" defer></script>
 <script src="assets/refonte.js" defer></script>
 <script src="assets/survol.js" defer></script>
+<script src="assets/choreo.js" defer></script>
 </body>
 </html>

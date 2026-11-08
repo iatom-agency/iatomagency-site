@@ -23,11 +23,25 @@
 <meta name="twitter:title" content="À propos — IATom Agency">
 <meta name="twitter:description" content="Thomas Blachère, fondateur d'IATom Agency : parcours et conviction sur l'adoption de l'IA.">
 <meta name="twitter:image" content="https://iatomagency.fr/assets/img/og-image.png">
+<script>
+/* Chorégraphie (choreo.js) : la classe « ch » n'est posée que si l'appareil n'a pas demandé de réduire les animations ;
+   retirée automatiquement si choreo.js ne démarre pas. L'ouverture en particules : accueil seulement, arrivée depuis l'extérieur du site. */
+(function(){var d=document.documentElement;try{
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){return;}
+d.classList.add('ch');
+var p=location.pathname,ext=true;
+try{ext=!document.referrer||new URL(document.referrer).origin!==location.origin;}catch(e){}
+var robot=/bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit/i.test(navigator.userAgent);
+if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot){d.classList.add('ouverture');}
+window.__chTimer=window.setTimeout(function(){if(!window.__ch){d.classList.remove('ch','ouverture');}},4000);
+}catch(e){}})();
+</script>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/styles.css">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/effects.css">
 <link rel="stylesheet" href="assets/survol.css">
+<link rel="stylesheet" href="assets/choreo.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -72,11 +86,11 @@
   <div class="grid-photo-bio" style="padding: 80px 80px 88px; display: grid; grid-template-columns: 360px 1fr; gap: 64px; align-items: start;">
     <div class="iat-photo" style="aspect-ratio: 3 / 4;"><img class="iat-photo__image" src="assets/img/thomas-blachere.jpg" alt="Thomas Blachère, fondateur d'IATom Agency"></div>
     <div style="display: flex; flex-direction: column; gap: 24px; max-width: 640px;">
-      <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Qui je suis</h1>
+      <h1 class="iat-heading iat-heading--h1" style="margin: 0px;">Qui je <em>suis</em></h1>
       <p class="iat-text iat-text--corps" style="margin: 0px;">Je m'appelle Thomas Blachère, je suis le fondateur unique d'IATom Agency, basée à Menton.</p>
       <div style="display: flex; flex-direction: column; gap: 20px; padding-top: 8px;">
         <div style="display: flex; flex-direction: column; gap: 8px;">
-        <h2 class="iat-heading iat-heading--h2" style="margin: 0px;">Mon histoire</h2>
+        <h2 class="iat-heading iat-heading--h2" style="margin: 0px;">Mon <em>histoire</em></h2>
         <p class="iat-text iat-text--corps" style="margin: 0px;">Mon premier métier, c'était la plongée sous-marine : moniteur en France d'abord, puis aux Maldives, où j'ai créé mon entreprise de croisières-plongée. J'y emmenais des passionnés explorer les fonds, lors de croisières commercialisées par le principal tour-opérateur spécialisé en plongée en France à l'époque.</p>
         <p class="iat-text iat-text--corps" style="margin: 0px;">J'étais alors très timide : demander mon chemin à un inconnu m'était impossible. Pourtant, dès que j'enseignais, cette timidité disparaissait. J'ai compris que maîtriser un savoir donne une assurance que rien d'autre ne donne. Et j'ai trouvé ce qui me fait avancer : l'émerveillement dans les yeux de ceux qui remontent d'une plongée après avoir découvert quelque chose de nouveau.</p>
         <p class="iat-text iat-text--corps" style="margin: 0px;">Plus tard, je suis tombé amoureux d'une île, Rihiveli. Son fondateur m'a choisi pour lui succéder à sa direction, un choix validé par le repreneur de l'île, alors que je ne connaissais rien à l'hôtellerie. Le savoir s'apprend ; la passion, elle, ne se transmet pas.</p>
@@ -84,7 +98,7 @@
         <p class="iat-text iat-text--corps" style="margin: 0px;">C'est ce que je fais aujourd'hui avec l'IA : transmettre un savoir qui rend confiant, pour que vos équipes retrouvent le temps de prendre soin. De vos clients, les uns des autres, de leur métier. Rendre au travail sa part humaine.</p>
         </div>
         <div style="display: flex; flex-direction: column; gap: 8px;">
-          <h2 class="iat-heading iat-heading--h2" style="margin: 0px;">Mon parcours</h2>
+          <h2 class="iat-heading iat-heading--h2" style="margin: 0px;">Mon <em>parcours</em></h2>
           <p class="iat-text iat-text--corps" style="margin: 0px;">Avant l'IA, plus de trente ans dans l'hôtellerie-restauration — dont plusieurs années à l'étranger, à la tête d'équipes nombreuses sur des sites isolés — puis un virage vers l'optimisation énergétique. Pas par le développement logiciel. Je pratique l'IA de façon active depuis plus de deux ans.</p>
         </div>
         <div style="display: flex; flex-direction: column; gap: 8px;">
@@ -104,7 +118,7 @@
 
   <!-- refonte : appel à l'action en bas de page -->
   <div style="background: var(--iat-petrole); padding: 72px 80px; display: flex; align-items: center; justify-content: space-between; gap: 48px;">
-    <h2 class="iat-heading iat-heading--h2" style="margin: 0px; color: var(--iat-blanc-chaud); max-width: 640px;">Faisons connaissance — 45 minutes, sans engagement.</h2>
+    <h2 class="iat-heading iat-heading--h2" style="margin: 0px; color: var(--iat-blanc-chaud); max-width: 640px;">Faisons <em>connaissance</em> — 45 minutes, sans engagement.</h2>
     <a class="iat-button iat-button--primary" href="contact.html" style="text-decoration:none;">Discutons de votre quotidien</a>
   </div>
 
@@ -119,7 +133,7 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">CONTACT</div>
-        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">06 01 48 33 18</a>
+        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">+33 (0)6 01 48 33 18</a><a class="footer-qr" href="https://s.vkard.io/p/30e7bf2a-7fc1-4e2c-b51f-27ae4fcb69c5/4a1ca84212?source=qr" target="_blank" rel="noopener"><img src="assets/img/qr-contact-thomas.svg" width="84" height="84" alt="QR code de la carte de contact de Thomas Blachère" loading="lazy"><span class="footer-qr-texte"><strong>Enregistrer mon contact</strong><span>Scannez ou cliquez pour ajouter Thomas à vos contacts.</span></span></a>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">LÉGAL</div>
@@ -140,5 +154,6 @@
 <script src="assets/consent.js" defer></script>
 <script src="assets/effects.js" defer></script>
 <script src="assets/survol.js" defer></script>
+<script src="assets/choreo.js" defer></script>
 </body>
 </html>

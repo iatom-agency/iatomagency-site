@@ -10,10 +10,24 @@
 <title>Merci — IATom Agency</title>
 <meta name="description" content="Votre message a bien été envoyé à IATom Agency.">
 <meta name="robots" content="noindex, follow">
+<script>
+/* Chorégraphie (choreo.js) : la classe « ch » n'est posée que si l'appareil n'a pas demandé de réduire les animations ;
+   retirée automatiquement si choreo.js ne démarre pas. L'ouverture en particules : accueil seulement, arrivée depuis l'extérieur du site. */
+(function(){var d=document.documentElement;try{
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){return;}
+d.classList.add('ch');
+var p=location.pathname,ext=true;
+try{ext=!document.referrer||new URL(document.referrer).origin!==location.origin;}catch(e){}
+var robot=/bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit/i.test(navigator.userAgent);
+if((p==='/'||/\/index\.html$/.test(p))&&!location.hash&&ext&&!robot){d.classList.add('ouverture');}
+window.__chTimer=window.setTimeout(function(){if(!window.__ch){d.classList.remove('ch','ouverture');}},4000);
+}catch(e){}})();
+</script>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/styles.css">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/effects.css">
+<link rel="stylesheet" href="assets/choreo.css">
 </head>
 <body>
 <div class="iat-progress" aria-hidden="true"><div class="iat-progress__bar" id="scrollProgress"></div></div>
@@ -53,7 +67,7 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">CONTACT</div>
-        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">06 01 48 33 18</a>
+        <a href="mailto:bonjour@iatomagency.fr" style="color:inherit;text-decoration:none;">bonjour@iatomagency.fr</a><a href="https://www.iatomagency.fr" style="color:inherit;text-decoration:none;">www.iatomagency.fr</a><a href="tel:+33601483318" style="color:inherit;text-decoration:none;">+33 (0)6 01 48 33 18</a><a class="footer-qr" href="https://s.vkard.io/p/30e7bf2a-7fc1-4e2c-b51f-27ae4fcb69c5/4a1ca84212?source=qr" target="_blank" rel="noopener"><img src="assets/img/qr-contact-thomas.svg" width="84" height="84" alt="QR code de la carte de contact de Thomas Blachère" loading="lazy"><span class="footer-qr-texte"><strong>Enregistrer mon contact</strong><span>Scannez ou cliquez pour ajouter Thomas à vos contacts.</span></span></a>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: var(--iat-font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--iat-gris-texte);">LÉGAL</div>
@@ -74,5 +88,6 @@
 <script src="assets/nav.js" defer></script>
 <script src="assets/consent.js" defer></script>
 <script src="assets/effects.js" defer></script>
+<script src="assets/choreo.js" defer></script>
 </body>
 </html>

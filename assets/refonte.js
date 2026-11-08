@@ -21,7 +21,7 @@
   //    masqués (aria-hidden).
   // -----------------------------------------------------------------
   var titre = document.querySelector(".iat-heading--display");
-  if (titre && !reduceMotion) {
+  if (titre && !reduceMotion && !document.documentElement.classList.contains("ouverture")) {
     var texte = titre.textContent.replace(/\s+/g, " ").trim();
     var mots = texte.split(" ");
     var debutSouligne = mots.indexOf("part");
@@ -35,8 +35,17 @@
       span.className = "iat-mot";
       span.setAttribute("aria-hidden", "true");
       span.style.setProperty("--i", i);
-      span.textContent = mot;
-      if (/^humaine/.test(mot)) span.classList.add("iat-calli");
+      if (/^humaine/.test(mot)) {
+        span.textContent = mot;
+        span.classList.add("iat-calli");
+      } else {
+        // les autres mots montent de sous un masque (voir refonte.css)
+        var interieur = document.createElement("span");
+        interieur.className = "iat-mot__i";
+        interieur.textContent = mot;
+        span.classList.add("iat-mot--masque");
+        span.appendChild(interieur);
+      }
 
       if (debutSouligne !== -1 && i >= debutSouligne) {
         if (!groupe) {
@@ -63,7 +72,7 @@
       path.setAttribute("d", "M2 8 C 38 2, 84 12, 128 6 S 186 4, 198 7");
       path.setAttribute("pathLength", "1");
       svg.appendChild(path);
-      svg.style.setProperty("--t", 180 + mots.length * 110 + 250 + "ms");
+      svg.style.setProperty("--t", 180 + mots.length * 110 + 1300 + "ms");
       groupe.appendChild(svg);
     }
   }
