@@ -525,3 +525,231 @@
     border-bottom-color: rgba(15, 76, 85, 0.25);
   }
 }
+
+/* ---------------------------------------------------------------------
+   9) Pages intérieures : Offre, À propos, Méthode, Contact (3 nov. 2026).
+   --------------------------------------------------------------------- */
+
+/* --- Offre : chaque grand bloc (PME / Collectivités / Syndics) --- */
+.grid-offre-section {
+  position: relative;
+  isolation: isolate;
+}
+.iat-offre__visuel {
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--iat-bordure);
+}
+.iat-offre__visuel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: scale 800ms var(--iat-ease, ease), translate 400ms var(--iat-ease, ease);
+}
+.iat-offre-bloc .iat-heading--h4 {
+  background-image: linear-gradient(var(--iat-corail), var(--iat-corail));
+  background-repeat: no-repeat;
+  background-size: 0% 3px;
+  background-position: 0 100%;
+  padding-bottom: 4px;
+  width: fit-content;
+  transition: background-size 600ms var(--iat-ease, ease);
+}
+.iat-puce {
+  transition: translate 350ms var(--iat-ease, ease);
+}
+.iat-puce > div:first-child {
+  transition: scale 350ms var(--iat-ease, ease), background-color 350ms ease;
+}
+.iat-lecture {
+  position: relative;
+  isolation: isolate;
+}
+
+/* --- À propos : photo qui reste en vue, signature qui se trace --- */
+@media (min-width: 901px) {
+  body:has(.grid-photo-bio) .page {
+    overflow-x: clip;
+  }
+  .grid-photo-bio > .iat-photo {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+  }
+}
+.iat-signature--trace {
+  clip-path: inset(-20% 100% -20% 0);
+  transition: clip-path 1700ms cubic-bezier(0.6, 0, 0.2, 1);
+}
+.iat-signature--on {
+  clip-path: inset(-20% 0 -20% 0);
+}
+
+/* --- Méthode : icône par étape --- */
+.grid-methode-step {
+  position: relative;
+}
+.iat-etape__icone {
+  display: none;
+}
+@media (min-width: 1180px) {
+  .iat-etape__icone {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 132px;
+    height: auto;
+    translate: 0 -50%;
+    transform-origin: center;
+    pointer-events: none;
+    transition: opacity 700ms var(--iat-ease, ease), scale 500ms var(--iat-ease, ease), rotate 500ms var(--iat-ease, ease);
+  }
+  .iat-js .grid-methode-step:not(.iat-etape--active) .iat-etape__icone {
+    opacity: 0.12;
+  }
+}
+
+/* --- Contact : coordonnées --- */
+.iat-coordonnees > div:last-child > div {
+  transition: translate 350ms var(--iat-ease, ease), color 250ms ease;
+}
+.iat-coordonnees .iat-icon {
+  transition: color 250ms ease, scale 350ms var(--iat-ease, ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* Offre : fond sable + motif qui défile derrière le bloc survolé */
+  .iat-offre-bloc::before {
+    content: "";
+    position: absolute;
+    inset: 0 -24px -24px;
+    z-index: -1;
+    background-color: var(--iat-sable);
+    background-image: var(--motif);
+    background-size: var(--taille, 24px);
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 500ms var(--iat-ease, ease), transform 600ms var(--iat-ease, ease);
+    pointer-events: none;
+  }
+  .iat-offre-bloc:hover::before {
+    opacity: 1;
+    transform: translateY(0);
+    animation: iat-motif 9s linear infinite;
+  }
+  .iat-offre-bloc:hover .iat-offre__visuel img {
+    scale: 1.08;
+  }
+  .iat-offre-bloc:hover .iat-heading--h4 {
+    background-size: 100% 3px;
+  }
+  .iat-offre-bloc .iat-card--sable {
+    transition: background-color 400ms ease;
+  }
+  .iat-offre-bloc:hover .iat-card--sable {
+    background-color: var(--iat-blanc-chaud);
+  }
+  .iat-puce:hover {
+    translate: 8px 0;
+  }
+  .iat-puce:hover > div:first-child {
+    scale: 1.9;
+    background-color: var(--iat-ambre) !important;
+  }
+
+  /* À propos : fond sable et trait corail qui glissent derrière chaque section */
+  .iat-lecture::before {
+    content: "";
+    position: absolute;
+    inset: -14px -18px;
+    z-index: -1;
+    background: var(--iat-sable);
+    border-radius: 10px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 550ms var(--iat-ease, ease);
+  }
+  .iat-lecture::after {
+    content: "";
+    position: absolute;
+    left: -18px;
+    top: -4px;
+    bottom: -4px;
+    width: 3px;
+    background: var(--iat-corail);
+    border-radius: 2px;
+    transform: scaleY(0);
+    transition: transform 450ms var(--iat-ease, ease);
+  }
+  .iat-lecture:hover::before {
+    transform: scaleX(1);
+  }
+  .iat-lecture:hover::after {
+    transform: scaleY(1);
+  }
+
+  /* Méthode : motif propre à chaque étape sous le fond sable */
+  .grid-methode-step:nth-child(2)::before { background-image: var(--motif-points-sombre); background-size: 24px; }
+  .grid-methode-step:nth-child(3)::before { background-image: var(--motif-hachures-sombre); background-size: 20px; }
+  .grid-methode-step:nth-child(4)::before { background-image: var(--motif-grille-sombre); background-size: 28px; }
+  .grid-methode-step:hover::before {
+    animation: iat-motif 9s linear infinite;
+    --taille: 24px;
+  }
+  .grid-methode-step:hover .iat-etape__icone {
+    scale: 1.12;
+    rotate: -4deg;
+  }
+
+  /* Contact : lignes de coordonnées qui glissent */
+  .iat-coordonnees > div:last-child > div:hover {
+    translate: 8px 0;
+    color: var(--iat-petrole);
+  }
+  .iat-coordonnees > div:last-child > div:hover .iat-icon {
+    color: var(--iat-corail);
+    scale: 1.25;
+  }
+}
+
+/* Écrans tactiles : chaque bloc d'Offre a sa teinte (même logique que les
+   cartes de l'accueil : pétrole clair / sauge / ambre clair). */
+@media (hover: none) {
+  .iat-offre-bloc {
+    padding: 28px 22px;
+    border-radius: 10px;
+  }
+  .iat-offre-bloc[data-teinte="0"] { background-color: #d8e6e5; }
+  .iat-offre-bloc[data-teinte="1"] { background-color: var(--iat-sauge); }
+  .iat-offre-bloc[data-teinte="2"] { background-color: #f3ddb0; }
+  .iat-offre-bloc .iat-card--sable {
+    background-color: var(--iat-blanc-chaud);
+  }
+  .iat-offre-bloc :is(.iat-text, .iat-heading) {
+    color: var(--iat-texte);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iat-signature--trace {
+    clip-path: none;
+    transition: none;
+  }
+  .iat-offre__visuel img,
+  .iat-etape__icone,
+  .iat-puce,
+  .iat-puce > div:first-child {
+    scale: none;
+    rotate: none;
+    translate: none;
+  }
+}
+
+
+/* À propos : plus de mot orphelin en fin de titre (« …comme / ça ») */
+.grid-photo-bio h2 {
+  text-wrap: balance;
+}
