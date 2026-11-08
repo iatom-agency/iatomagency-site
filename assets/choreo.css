@@ -414,3 +414,14 @@ html.ouverture .iat-passer {
 .site-footer-cols a.footer-qr:focus-visible {
   translate: 0 -2px;
 }
+
+/* QR code sous le logo du pied de page */
+.footer-marque {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.footer-marque .footer-qr {
+  margin-top: 0;
+}
