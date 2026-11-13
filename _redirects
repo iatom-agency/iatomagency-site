@@ -10,3 +10,7 @@ https://iatomagency.eu/*      https://iatomagency.fr/:splat   301!
 http://iatomagency.eu/*       https://iatomagency.fr/:splat   301!
 https://www.iatomagency.eu/*  https://iatomagency.fr/:splat   301!
 http://www.iatomagency.eu/*   https://iatomagency.fr/:splat   301!
+
+# Raccourci vers la carte de visite VKARD de Thomas : iatomagency.fr/carte
+# Redirection temporaire (302) : si l'adresse VKARD change, on ne corrige que cette ligne.
+/carte   https://s.vkard.io/p/30e7bf2a-7fc1-4e2c-b51f-27ae4fcb69c5/4a1ca84212   302
